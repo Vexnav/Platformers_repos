@@ -31,7 +31,7 @@
         </tr>
       </thead>
       <tbody>
-        {% for item in lost_items %}
+        {% for item in items %}
         <tr>
           <td>{{ item.title }}</td>
           <td>{{ item.description }}</td>
@@ -40,8 +40,8 @@
             <form method="POST" action="/admin/update/{{ item.id }}">
               <div class="input-group">
                 <select name="status" class="form-select" required>
-                  <option value="Pending" {% if item.status == "Lost" %}selected{% endif %}>Lost</option>
-                  <option value="In Process" {% if item.status == "Found" %}selected{% endif %}>Found</option>
+                  <option value="Lost" {% if item.status == "Lost" %}selected{% endif %}>Lost</option>
+                  <option value="Found" {% if item.status == "Found" %}selected{% endif %}>Found</option>
                   <option value="Recovered" {% if item.status == "Claimed" %}selected{% endif %}>Claimed</option>
                 </select>
                 <button type="submit" class="btn btn-success">Update</button>
