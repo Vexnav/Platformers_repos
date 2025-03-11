@@ -7,6 +7,7 @@ from datetime import datetime
 from models import Item, Student, Category, Review
 from forms import LoginForm, ReportLostItemForm, ReviewForm
 from flask_login import LoginManager, login_required, login_user, logout_user, current_user
+from models import Admin, Student
 
 app = Flask(__name__)
 app.config.from_object('config.Config') 
@@ -126,7 +127,7 @@ def update_lost_item(item_id):
         return redirect(url_for('login'))
     items = Item.query.get_or_404(item_id)
     new_status = request.form.get('status')
-    lost.status = new_status
+    update_lost_item.status = new_status
     db.session.commit()
     flash("Lost item status updated.", "success")
     return redirect(url_for('admin_dashboard'))

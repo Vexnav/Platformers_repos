@@ -4,9 +4,12 @@ from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed
 from werkzeug.utils import secure_filename
 import os
-from forms import LoginForm, RegistrationForm, ReportItemForm, MatchItemForm
+from forms import LoginForm, ReportLostItemForm  # MatchItemForm and RegistrationForm was removed - its not declared in forms.py
 from flask import flash
 from werkzeug.security import generate_password_hash, check_password_hash
+from flask_login import LoginManager
+from models import Admin, Student
+
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///lost_and_found.db'
@@ -54,20 +57,19 @@ def dashboard():
 @app.route('/report_item', methods=['GET', 'POST'])
 
 def report_item():
-            form = ReportItemForm()
-            if form.validate_on_submit():
-                     if 'image' in request.files:
-                              image_file = request.files['image']
-                             if image_file and allowed_file(image_file.filename):
-                                       filename = secure_filename(image_file.filename)
-                             image_path = os.path.join(app.config['UPLOAD_FOLDER'],   filename)
+    form = ReportLostItemForm()
+    if form.validate_on_submit():
+        if 'image' in request.files:
+            image_file = request.files['image']
+            if image_file and allowed_file(image_file.filename):
+                filename = secure_filename(image_file.filename)
+                image_path = os.path.join(app.config['UPLOAD_FOLDER'],   filename)
                 image_file.save(image_path)
-                image_url = os.path.join('static/uploads', filename
+                image_url = os.path.join('static/uploads', filename)
             else:
                 image_url = None  
         else:
-            image_url = None  
-        
+            image_url = None
         item = Item(name=form.name.data,   description=form.description.data, location=form.location.data,   item_type=form.item_type.data, image_url=image_url)
         db.session.add(item)
         db.session.commit()
