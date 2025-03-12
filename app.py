@@ -48,7 +48,7 @@ def index():
     else:
         items = LostItem.query.all()  
 
-    return render_template('index.html')
+    return render_template('index.html', items=items)
 
 @app.route('/report', methods=['GET', 'POST'])
 def report():
