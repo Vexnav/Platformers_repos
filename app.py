@@ -36,18 +36,20 @@ def create_app():
     def home():
         return render_template('home.html')
 
-    @app.route('/index', methods=['GET'])
-    def index():
-        query = request.args.get('q', '')  
-        if query:
-            items = LostItem.query.filter(
-                (LostItem.item_name.ilike(f"%{query}%")) |
-                (LostItem.description.ilike(f"%{query}%")) |
-                (LostItem.last_seen_location.ilike(f"%{query}%"))
-            ).all()
-        else:
-            items = LostItem.query.all()  
-        return render_template('index.html', items=items)
+@app.route('/index', methods=['GET'])
+def index():
+    query = request.args.get('q', '')  
+
+    if query:
+        items = LostItem.query.filter(
+            (LostItem.item_name.ilike(f"%{query}%")) |
+            (LostItem.description.ilike(f"%{query}%")) |
+            (LostItem.last_seen_location.ilike(f"%{query}%"))
+        ).all()
+    else:
+        items = LostItem.query.all()  
+
+    return render_template('index.html')
 
     @app.route('/report', methods=['GET', 'POST'])
     def report():
