@@ -35,13 +35,14 @@ def load_user(user_id):
 
 @app.route('/')
 def home():
-    return render_template('index.html')
+    return render_template('home.html')
 
 # Login Page
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
-    # 'User' was not found- this line threw error: user = User.query.filter_by(username=form.username.data).first()
+    # 'User' was not found- this line threw error: 
+    # user = User.query.filter_by(username=form.username.data).first()
     '''
     if form.validate_on_submit():
         # Assume we have a user lookup function
@@ -54,7 +55,10 @@ def login():
             flash('Login Failed. Please check your credentials.', 'danger')
 
     '''
-    return render_template('login.html', form=form)
+    #old line of code was: 
+    #return render_template('login.html', form=form)
+    
+    return render_template('login.html')
 
 
 #Variable 'Item' was not found-threw and error. See code below.
@@ -66,8 +70,9 @@ def dashboard():
 
 @app.route('/report_item', methods=['GET', 'POST'])
 
-def report_item():
+def report():
     form = ReportLostItemForm()
+    '''
     if form.validate_on_submit():
         if 'image' in request.files:
             image_file = request.files['image']
@@ -81,17 +86,25 @@ def report_item():
         else:
             image_url = None
 
-        '''
+       
         item = Item(name=form.name.data,   description=form.description.data, location=form.location.data,   item_type=form.item_type.data, image_url=image_url)
         db.session.add(item)
-        '''
+        
         db.session.commit()
         flash(f'Item "{form.name.data}" has been reported successfully!', 'success')
         return redirect(url_for('dashboard'))
-    
-    return render_template('report_item.html', form=form)
+    '''
+    #old line of code was: 
+    #return render_template('report_item.html', form=form)
+    return render_template('report.html')
 
 #MatchItemForm is not declared in forms.py yet.
+
+
+@app.route('/index') 
+def index():
+    return render_template('index.html')
+
 
 '''
 @app.route('/match_item/<item_id>', methods=['GET', 'POST'])
