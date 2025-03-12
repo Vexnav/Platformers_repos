@@ -8,46 +8,76 @@ db = SQLAlchemy()
 class Student(db.Model):
     __tablename__ = 'student'
     id = db.Column(db.Integer, primary_key=True)
-    first_name = db.Column(db.String(50), nullable=False)
-    last_name = db.Column(db.String(50))
-    email = db.Column(db.String(120), unique=True, nullable=False)
-    lost_items = db.relationship("Item", backref="student", lazy=True)
+    fullname = db.Column(db.String(100), nullable=False)
+    email = db.Column(db.String(100), unique=True, nullable=False)
+    password = db.Column(db.String(255), nullable=False)
+    role = db.Column(db.String(50), nullable=False)
+    claims = db.relationship('ClaimRequest', backref='claimer', lazy=True)
+    notifications = db.relationship('Notification', backref='recipient', lazy=True)
 
-class Admin(db.Model, UserMixin):
-    __tablename__ = 'admin'
+class LostItem(db.Model):
+    __tablename__ = 'lost_item'
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(80), unique=True, nullable=False)
-    email = db.Column(db.String(120), unique=True, nullable=False)
-    password_hash = db.Column(db.String(128), nullable=False)
-    lost_items_processed = db.relationship("Item", backref="admin", lazy=True)
+    category_id = db.Column(db.Integer, db.ForeignKey('categories.id'), nullable=False)
+    item_name = db.Column(db.String(100), nullable=False)
+    last_seen_location = db.Column(db.String(255), nullable=False)
+    date_lost = db.Column(db.DateTime, nullable=False)
+    description = db.Column(db.Text, nullable=False)
+    image = db.Column(db.String(255), nullable=True)
+    status = db.Column(db.String(50), nullable=False)
+    matches = db.relationship('Match', backref='lost_item', lazy=True)
 
-    def set_password(self, password):
-        self.password_hash = generate_password_hash(password)
+class FoundItem(db.Model):
+    __tablename__ = 'found_item'
+    id = db.Column(db.Integer, primary_key=True)
+    category_id = db.Column(db.Integer, db.ForeignKey('categories.id'), nullable=False)
+    item_name = db.Column(db.String(100), nullable=False)
+    location_found = db.Column(db.String(255), nullable=False)
+    date_found = db.Column(db.DateTime, nullable=False)
+    description = db.Column(db.Text, nullable=False)
+    image = db.Column(db.String(255), nullable=True)
+    status = db.Column(db.String(50), nullable=False)
+    matches = db.relationship('Match', backref='found_item', lazy=True)
+    claims = db.relationship('ClaimRequest', backref='found_item_claimed', lazy=True)
 
-    def check_password(self, password):
-        return check_password_hash(self.password_hash, password)
-        
 class Category(db.Model):
-    __tablename__ = 'category'
+    __tablename__ = 'categories'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), unique=True, nullable=False)
-    lost_items = db.relationship("Item", backref="category", lazy=True)
+    lost_items = db.relationship('LostItem', backref='category', lazy=True)
+    found_items = db.relationship('FoundItem', backref='category', lazy=True)
 
-class Item(db.Model):
-    __tablename__ = 'item'
-    id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(200), nullable=False)
-    description = db.Column(db.Text, nullable=True)
-    date_lost = db.Column(db.DateTime, default=datetime.utcnow, nullable=True)
-    image_filename = db.Column(db.String(255), nullable=True)
-    status = db.Column(db.String(50), nullable=False, default="Lost")
-    student_id = db.Column(db.Integer, db.ForeignKey("student.id"), nullable=True)
-    category_id = db.Column(db.Integer, db.ForeignKey("category.id"), nullable=False)
-    processed_by_admin_id = db.Column(db.Integer, db.ForeignKey("admin.id"), nullable=True)
+    def __repr__(self):
+        return f'<Category {self.name}>'
 
-class Review(db.Model):
-    __tablename__ = 'review'
+class Match(db.Model):
+    __tablename__ = 'match'
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100), nullable=False)
-    review_text = db.Column(db.Text, nullable=False)  
-    created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)  
+    lost_item_id = db.Column(db.Integer, db.ForeignKey('lost_item.id'), nullable=False)
+    found_item_id = db.Column(db.Integer, db.ForeignKey('found_item.id'), nullable=False)
+    match_score = db.Column(db.Float, nullable=False)
+    match_status = db.Column(db.String(50), nullable=False)
+
+class ClaimRequest(db.Model):
+    __tablename__ = 'claim_request'
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('student.id'), nullable=False)
+    found_item_id = db.Column(db.Integer, db.ForeignKey('found_item.id'), nullable=False)
+    admin_id = db.Column(db.Integer, db.ForeignKey('admins.id'), nullable=True)
+    status = db.Column(db.String(50), nullable=False)
+    claim_date = db.Column(db.DateTime, default=datetime.utcnow)
+
+class Notification(db.Model):
+    __tablename__ = 'notification'
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('student.id'), nullable=False)
+    message = db.Column(db.Text, nullable=False)
+    timestamp = db.Column(db.DateTime, default=datetime.utcnow)
+    status = db.Column(db.String(50), nullable=False)
+
+class Admin(db.Model):
+    __tablename__ = 'admins'
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('student.id'), nullable=False)
+    permissions = db.Column(db.String(255), nullable=False)
+

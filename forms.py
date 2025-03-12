@@ -9,14 +9,21 @@ class LoginForm(FlaskForm):
     submit = SubmitField('Login')
 
 class ReportLostItemForm(FlaskForm):
-    title = StringField('Title',validators=[DataRequired(message="Please enter the lost item title!"), Length(min=2, max=200)])
-    description = TextAreaField('Item Description',validators=[DataRequired(message="Please enter item description!")])
-    category_id = SelectField('Category',coerce=int,validators=[DataRequired(message="Please select category!")]) 
-    date_lost = DateField('Lost Date', format='%Y-%m-%d') 
-    image = FileField('Item Image',validators=[FileAllowed(['jpg', 'jpeg', 'png', 'gif'], 'Images only!')])
-    submit = SubmitField('Report Lost Item')
+    item_name = StringField('Item Name', validators=[DataRequired(), Length(max=100, message="Item name cannot exceed 100 characters.")])
+    category = SelectField('Category',validators=[DataRequired()])
+    last_seen_location = StringField('Last Seen Location', validators=[DataRequired(), Length(max=255, message="Location cannot exceed 255 characters.")])
+    description = TextAreaField('Description', validators=[DataRequired(), Length(max=500, message="Description cannot exceed 500 characters.")])
+    date_lost = DateField('Date Found', validators=[DataRequired()], format='%Y-%m-%d')
+    image = FileField('Upload Image', validators=[FileAllowed(['jpg', 'jpeg', 'png', 'gif'], 'Images only!')])
+    submit = SubmitField('Submit')
 
-class ReviewForm(FlaskForm):
-    name = StringField( 'Your Name', validators=[ DataRequired(message="Please enter your name!"),Length(max=100, message="Name cannot exceed 100 characters.")] )
-    review_text = TextAreaField('Your Review', validators=[ DataRequired(message="Review text is required."),Length(min=10, message="Review must be at least 10 characters long.")])
-    submit = SubmitField('Submit Review')
+class ReportFoundItemForm(FlaskForm):
+    item_name = StringField('Item Name', validators=[DataRequired(), Length(max=100, message="Item name cannot exceed 100 characters.")])
+    category = SelectField('Category',validators=[DataRequired()])
+    location_found = StringField('Location Found', validators=[DataRequired(), Length(max=255, message="Location cannot exceed 255 characters.")])
+    description = TextAreaField('Description', validators=[DataRequired(), Length(max=500, message="Description cannot exceed 500 characters.")])
+    date_found = DateField('Date Found', validators=[DataRequired()], format='%Y-%m-%d')
+    image = FileField('Upload Image', validators=[FileAllowed(['jpg', 'jpeg', 'png', 'gif'], 'Images only!')])
+    submit = SubmitField('Submit')
+
+

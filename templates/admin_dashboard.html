@@ -26,22 +26,26 @@
         <tr>
           <th>Title</th>
           <th>Description</th>
+          <th>Last Seen Location</th>
+          <th>Date Lost</th>
           <th>Status</th>
           <th>Update Status</th>
         </tr>
       </thead>
       <tbody>
-        {% for item in items %}
+        {% for item in lost_items %}
         <tr>
-          <td>{{ item.title }}</td>
+          <td>{{ item.item_name }}</td>
           <td>{{ item.description }}</td>
+          <td>{{ item.last_seen_location }}</td>
+          <td>{{ item.date_lost }}</td>
           <td>{{ item.status }}</td>
           <td>
             <form method="POST" action="/admin/update/{{ item.id }}">
               <div class="input-group">
                 <select name="status" class="form-select" required>
-                  <option value="Lost" {% if item.status == "Lost" %}selected{% endif %}>Lost</option>
-                  <option value="Found" {% if item.status == "Found" %}selected{% endif %}>Found</option>
+                  <option value="Pending" {% if item.status == "Lost" %}selected{% endif %}>Lost</option>
+                  <option value="In Process" {% if item.status == "Found" %}selected{% endif %}>Found</option>
                   <option value="Recovered" {% if item.status == "Claimed" %}selected{% endif %}>Claimed</option>
                 </select>
                 <button type="submit" class="btn btn-success">Update</button>
@@ -54,27 +58,10 @@
     </table>
   </div>
   
-  <div class="col-md-6">
-    <h4>User Reviews</h4>
-    <div class="list-group">
-      {% if reviews %}
-        {% for review in reviews %}
-          <div class="list-group-item">
-            <h5 class="mb-1">{{ review.name }}</h5>
-            <p class="mb-1">{{ review.review_text }}</p>
-            <small class="text-muted">Posted on {{ review.created_at.strftime('%Y-%m-%d %H:%M') }}</small>
-          </div>
-        {% endfor %}
-      {% else %}
-        <p>No reviews yet. Be the first to leave one!</p>
-      {% endif %}
-    </div>
-  </div>
 
   <footer class="bg-light text-center py-3 mt-5">
     <div>
-      © 2025 Lost 
- and Found. All rights reserved.
+      © 2025 Dut Lost & Found. All rights reserved.
       <a href="#" class="text-primary">Privacy Policy</a> |
       <a href="#" class="text-primary">Terms of Service</a>
     </div>

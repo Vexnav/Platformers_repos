@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Report Found Item</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/styles.css" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container">
+          <a class="navbar-brand" href="/">Found Items Portal</a>
+          <div class="collapse navbar-collapse">
+            <ul class="navbar-nav ms-auto">
+              <li class="nav-item"><a class="nav-link" href="{{url_for('index')}}">Browse Lost items</a></li>
+              <li class="nav-item"><a class="nav-link" href="{{url_for('home')}}">Home</a></li>
+            </ul>
+          </div>
+        </div>
+    </nav>
+    
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-md-6">
+                <h1>Report Found Item</h1>
+                <form method="POST" enctype="multipart/form-data" action="/report_found">
+                    <div class="mb-3">
+                        <label for="item_name">Item Name:</label>
+                        <input type="text" id="item_name" name="item_name" class="form-control" placeholder="Enter item name" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="location_found">Location Found:</label>
+                        <input type="text" id="location_found" name="location_found" class="form-control" placeholder="Enter location where item was found" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="description">Description:</label>
+                        <textarea id="description" name="description" class="form-control" placeholder="Provide a brief description" required></textarea>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="category_id" class="form-label">Category</label>
+                        <select name="category_id" id="category_id" class="form-select" required>
+                          {% for category in categories %}
+                          <option value="{{ category.id }}">{{ category.name }}</option>
+                          {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="date_found">Date Found:</label>
+                        <input type="date" id="date_found" name="date_found" class="form-control" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="image">Upload Image:</label>
+                        <input type="file" id="image" name="image" class="form-control" accept="image/*">
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
+            
+            <div class="col-md-6 d-flex align-items-center justify-content-center">
+                <img src="/static/images/3047124.jpg" alt="Found Item Illustration" class="img-fluid">
+            </div>
+        </div>
+    </div>
+    
+    <footer class="bg-light text-center py-3 mt-5">
+        <div>
+          © 2025 Dut Lost and Found. All rights reserved.
+          <a href="/privacy-policy" class="text-primary">Privacy Policy</a> |
+          <a href="/terms" class="text-primary">Terms of Service</a>
+        </div>
+    </footer>
+</body>
+</html>

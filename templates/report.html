@@ -8,6 +8,7 @@
   <link href="/static/styles.css" rel="stylesheet">
 </head>
 <body>
+  <!-- Navigation -->
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container">
       <a class="navbar-brand" href="/">Lost Items Portal</a>
@@ -20,41 +21,59 @@
     </div>
   </nav>
 
-  <div class="container mt-4">
-    <h1>Report Lost Item</h1>
-    <form method="POST" action="/report_item" enctype="multipart/form-data">
-      <div class="mb-3">
-        <label for="title" class="form-label">Title</label>
-        <input type="text" name="title" id="title" class="form-control" placeholder="enter item title">
-      </div>
-      <div class="mb-3">
-        <label for="description" class="form-label">Description</label>
-        <textarea name="description" id="description" rows="4" class="form-control" placeholder="enter item description" required></textarea>
-      </div>
-      <div class="mb-3">
-        <label for="category_id" class="form-label">Category</label>
-        <select name="category_id" id="category_id" class="form-select" placeholder="....select item category...." required >
-          {% for category in categories %}
-          <option value="{{ category.id }}">{{ category.name }}</option>
-          {% endfor %}
-        </select>
-      </div>
-      <div class="mb-3">
-        <label for="date_lost" class="form-label">Date Lost</label>
-        <input type="datetime" name="date_lost" id="dete_lost"  class="form-control" placeholder="enter the date that you lost your item" >
-      </div>
-      <div class="mb-3">
-        <label for="image" class="form-label">Item Image</label>
-        <input type="file" name="image" id="image" class="form-control" placeholder="upload item image">
-      </div>
-      <button type="submit" class="btn btn-primary">Submit</button>
-    </form>
+  <div class="container mt-4 text-center">
+    <img src="/static/images/ManDropPhone.png" alt="Lost and Found Illustration" class="img-fluid mb-4" style="max-height: 300px;">
+    <h1>Report Your Lost Item</h1>
+    <p class="lead">Fill out the form below to report a lost item and help us reunite you with it!</p>
   </div>
 
-  <footer class="bg-light text-center py-3 mt-5">
+  <div class="container">
+    <div class="form-container mt-4">
+      <h2 class="mb-3">Lost Item Details</h2>
+      <form method="POST" action="/report" enctype="multipart/form-data">
+        <div class="mb-3">
+          <label for="item_name" class="form-label">Item Name</label>
+          <input type="text" name="item_name" id="item_name" class="form-control" placeholder="Enter item name" required>
+        </div>
+        
+        <div class="mb-3">
+          <label for="last_seen_location">Last Seen Location</label>
+          <input type="text" id="last_seen_location" name="last_seen_location" class="form-control" placeholder="Enter location where item was last seen" required>
+        </div>
+
+        <div class="mb-3">
+          <label for="description" class="form-label">Description</label>
+          <textarea name="description" id="description" rows="4" class="form-control" placeholder="Enter item description" required></textarea>
+        </div>
+
+        <div class="mb-3">
+          <label for="category_id" class="form-label">Category</label>
+          <select name="category_id" id="category_id" class="form-select" required>
+            {% for category in categories %}
+            <option value="{{ category.id }}">{{ category.name }}</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label for="date_lost" class="form-label">Date Lost</label>
+          <input type="date" name="date_lost" id="date_lost" class="form-control" required>
+        </div>
+
+        <div class="mb-3">
+          <label for="image" class="form-label">Item Image</label>
+          <input type="file" name="image" id="image" class="form-control" accept="image/*">
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100">Submit Report</button>
+      </form>
+    </div>
+  </div>
+
+  <footer class="bg-light text-center py-3 mt-auto">
     <div>
-      © 2025 Lost & Found. All rights reserved.
-      <a href="/privacy-policy" class="text-primary">Privacy Policy</a> |
+      <p>© 2025 DUT Lost And Found. All rights reserved.</p>
+      <a href="/privacy-policy" class="text-primary me-3">Privacy Policy</a>
       <a href="/terms" class="text-primary">Terms of Service</a>
     </div>
   </footer>

@@ -26,30 +26,27 @@
     </div>
   </nav>
 
-  <div class="container mt-4">
-    <h1>Items</h1>
-    <div class="row">
-      <!-- {% for item in items %} -->
-        
-      <div class="col-md-4">
-        <div class="card mb-4">
-        <!--  {% if item.image_filename %} -->
-          <img src="{{ url_for('static', filename='images/' ~ item.image_filename) }}" class="card-img-top" alt="{{ item.title }}">
-         <!-- {% endif %} -->
-          <div class="card-body">
-            <h5 class="card-title">{{ item.title }}</h5>
-            <p class="card-text">{{ item.description }}</p>
-            <p class="card-text"><small class="text-muted">Status: {{ item.status }}</small></p>
-          </div>
-        </div>
-      </div>
-    <!--  {% endfor %} -->
-    </div>
-  </div>
-
+  {% if items %}
+   <ul>
+     {% for item in lostitems %}
+        <li>
+          <strong>{{ item.item_name }}</strong><br>
+          <em>{{ item.description }}</em><br>
+          Last seen: {{ item.last_seen_location }}<br>
+          {% if item.image %}
+              <img src="{{ url_for('static', filename='images/' + item.image) }}" alt="{{ item.item_name }}" width="200">
+          {% else %}
+              <p>No image available.</p>
+          {% endif %}
+       </li>
+      {% endfor %}
+    </ul>
+    {% else %}
+       <p>No items found.</p>
+  {% endif %}
   <footer class="bg-light text-center py-3 mt-5">
     <div>
-      © 2025 Lost & Found. All rights reserved.
+      © 2025 Dut Lost And Found. All rights reserved.
       <a href="/privacy-policy" class="text-primary">Privacy Policy</a> |
       <a href="/terms" class="text-primary">Terms of Service</a>
     </div>

@@ -1,5 +1,5 @@
 html, body {
-    background: linear-gradient(to bottom, #B4E5FF, #FFFFFF, #9DFF9D);
+    background: linear-gradient(to right, #dff6ff, #b5e4f7);
     font-family: Arial, sans-serif;
     height: 100%;
     min-height: 100vh;
@@ -12,7 +12,7 @@ html, body {
     padding: 30px;
     border-radius: 10px;
     box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
-    max-width: 600px;
+    max-width: 700px;
     margin: 40px auto;
     width: 100%;
 }
@@ -62,10 +62,10 @@ button:hover {
     position: relative;
     bottom: 0;
     width: 100%;
-    margin-top: 40px;
+    margin-top: auto;
 }
 .login-btn {
-    background-color: #00aaff;
+    background-color: blue;
     color: white;
     border-radius: 5px;
     padding: 5px 15px;
@@ -90,14 +90,6 @@ button:hover {
     background-color: #0077cc;
     color: white;
 }
-.tips, .worry-section, .reviews {
-    margin: 50px 0;
-    padding: 20px;
-    border-radius: 10px;
-    background: white;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-}
-
 h3 {
     font-size: 1.8rem;
     line-height: 1.5;
@@ -113,8 +105,8 @@ p {
     color: white;
 }
 .page-header h1 {
-    font-size: 2.5rem;
-    margin-bottom: 10px;
+    font-size: 3.5rem;
+    margin-bottom: 80px;
 }
 .card {
     background: #765d5d;
@@ -190,7 +182,7 @@ p {
     width: 100%;
 }
 .form-container h1 {
-    color: #333;
+    color: blue;
     margin-bottom: 1.5rem;
 }
 .form-container button {
@@ -226,4 +218,7 @@ p {
 .card:hover {
     transform: translateY(-5px);
     box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+}
+h1{
+    color: blue;
 }
