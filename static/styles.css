@@ -1,12 +1,76 @@
+/* General Styles */
 html, body {
-    background: linear-gradient(to right, #dff6ff, #b5e4f7);
+    background: linear-gradient(135deg, #87CEEB, #32CD32);
     font-family: Arial, sans-serif;
-    height: 100%;
+    height: 125%;
     min-height: 100vh;
     margin: 0;
     display: flex;
     flex-direction: column;
 }
+
+.main-content {
+    flex: 1;
+}
+
+.footer {
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 20px 0;
+    position: relative;
+    bottom: 0;
+    width: 100%;
+    margin-top: auto;
+}
+
+/* Navigation Bar Styles */
+nav {
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+nav .logo {
+    font-size: 24px;
+    font-weight: bold;
+    color: black; /* Logo text color changed to black */
+}
+
+nav .nav-links {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+nav .nav-links a {
+    text-decoration: none;
+    color: black; /* Nav links color changed to black */
+    font-size: 16px;
+}
+
+nav .nav-links a:hover {
+    color: #32CD32; /* Green on hover */
+}
+
+nav .login-button {
+    background-color: blue; /* Login button changed to blue */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+nav .login-button:hover {
+    background-color: darkblue; /* Darker blue on hover */
+}
+
+/* Form Styles */
 .form-container {
     background: #ffffff;
     padding: 30px;
@@ -16,6 +80,7 @@ html, body {
     margin: 40px auto;
     width: 100%;
 }
+
 .form-title {
     text-align: center;
     font-size: 1.8rem;
@@ -28,56 +93,23 @@ html, body {
     border-color: #0056b3;
     box-shadow: 0px 0px 5px rgba(0, 123, 255, 0.5);
 }
+
 button {
     background-color: #0056b3;
     border: none;
     transition: background-color 0.3s ease;
 }
+
 button:hover {
-    background-color:#0056b3;
+    background-color: #0056b3;
 }
 
-
-.main-content {
-    flex: 1;
-}
-.navbar {
-    background-color: #f8f9fa;
-}
-.search-input {
-    max-width: 300px;
-}
-.navbar {
-    background-color: #fff;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-}
-.navbar-brand {
-    font-weight: bold;
-}
-.footer {
-    background-color: #333;
-    color: white;
-    text-align: center;
-    padding: 20px 0;
-    position: relative;
-    bottom: 0;
-    width: 100%;
-    margin-top: auto;
-}
-.login-btn {
-    background-color: blue;
-    color: white;
-    border-radius: 5px;
-    padding: 5px 15px;
-}
-.login-btn:hover {
-    background-color: #0077cc;
-    color: #fff;
-}
+/* Hero Section */
 .hero {
     text-align: center;
     padding: 50px 20px;
 }
+
 .btn-custom {
     background-color: black;
     color: white;
@@ -86,49 +118,52 @@ button:hover {
     margin: 10px;
     transition: background-color 0.3s;
 }
+
 .btn-custom:hover, .btn-custom:focus {
     background-color: #0077cc;
     color: white;
 }
-h3 {
-    font-size: 1.8rem;
-    line-height: 1.5;
-}
-p {
-    font-size: 1rem;
-    line-height: 1.6;
-}
+
+/* Page Header */
 .page-header {
     text-align: center;
     padding: 40px 20px;
     background: linear-gradient(to right, #007bff, #00aaff);
     color: white;
 }
+
 .page-header h1 {
     font-size: 3.5rem;
     margin-bottom: 80px;
 }
+
+/* Card Styles */
 .card {
     background: #765d5d;
     padding: 3px;
     max-width: 200px;
-    margin:  auto; 
+    margin: auto;
     width: 100%;
     margin-bottom: 10px;
     border-radius: 10px;
     box-shadow: 0px 4px 10px rgba(68, 215, 231, 0.1);
 }
+
 .card img {
     max-width: 200px;
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
 }
+
 .card-title {
     color: #007bff;
 }
+
 .row {
-    gap: 0px; 
+    gap: 0px;
 }
+
+/* Login Container */
 .login-container {
     background-color: #ffffff;
     padding: 2rem;
@@ -137,16 +172,19 @@ p {
     width: 300px;
     text-align: center;
 }
+
 .login-container h1 {
     margin-bottom: 1.5rem;
     color: #333;
 }
+
 .login-container label {
     display: block;
     text-align: left;
     margin-bottom: 0.5rem;
     color: #555;
 }
+
 .login-container input {
     width: 40%;
     padding: 10px;
@@ -155,6 +193,7 @@ p {
     border-radius: 5px;
     font-size: 1rem;
 }
+
 .login-container button {
     width: 100%;
     padding: 10px;
@@ -165,60 +204,43 @@ p {
     font-size: 1rem;
     cursor: pointer;
 }
+
 .login-container button:hover {
     background-color: #0056b3;
 }
+
 .login-container p {
     margin-top: 1rem;
     color: #777;
     font-size: 0.9rem;
 }
-.form-container {
-    background: white;
-    padding: 2rem;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    max-width: 400px;
-    width: 100%;
-}
-.form-container h1 {
+
+/* Additional Styles */
+h1 {
     color: blue;
-    margin-bottom: 1.5rem;
 }
-.form-container button {
-    background-color: #007bff;
-    border: none;
-    color: white;
-    padding: 10px;
-    border-radius: 5px;
+
+h3 {
+    font-size: 1.8rem;
+    line-height: 1.5;
+}
+
+p {
     font-size: 1rem;
-    cursor: pointer;
-    width: 100%;
+    line-height: 1.6;
 }
-.form-container button:hover {
-    background-color: #0056b3;
-}
-.form-container a {
-    text-decoration: none;
-    color: #007bff;
-}
-.form-container a:hover {
-    text-decoration: underline;
-}
+
 .hero-section {
     background-color: #f8f9fa;
     padding: 4rem 0;
     text-align: center;
 }
-  
+
 .card {
     transition: transform 0.3s, box-shadow 0.3s;
 }
-  
+
 .card:hover {
     transform: translateY(-5px);
     box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
-}
-h1{
-    color: blue;
 }

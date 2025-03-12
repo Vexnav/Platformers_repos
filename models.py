@@ -1,11 +1,8 @@
-from flask_sqlalchemy import SQLAlchemy
-from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
+from extensions import db
+from flask_login import UserMixin
 from datetime import datetime
-from werkzeug.security import generate_password_hash, check_password_hash
 
-db = SQLAlchemy()
-
-class Student(db.Model):
+class Student(db.Model, UserMixin):  # Ensuring compatibility with Flask-Login
     __tablename__ = 'student'
     id = db.Column(db.Integer, primary_key=True)
     fullname = db.Column(db.String(100), nullable=False)
@@ -18,7 +15,7 @@ class Student(db.Model):
 class LostItem(db.Model):
     __tablename__ = 'lost_item'
     id = db.Column(db.Integer, primary_key=True)
-    category_id = db.Column(db.Integer, db.ForeignKey('categories.id'), nullable=False)
+    category_id = db.Column(db.Integer, db.ForeignKey('category.id'), nullable=False)  # Fixed table reference
     item_name = db.Column(db.String(100), nullable=False)
     last_seen_location = db.Column(db.String(255), nullable=False)
     date_lost = db.Column(db.DateTime, nullable=False)
@@ -30,7 +27,7 @@ class LostItem(db.Model):
 class FoundItem(db.Model):
     __tablename__ = 'found_item'
     id = db.Column(db.Integer, primary_key=True)
-    category_id = db.Column(db.Integer, db.ForeignKey('categories.id'), nullable=False)
+    category_id = db.Column(db.Integer, db.ForeignKey('category.id'), nullable=False)
     item_name = db.Column(db.String(100), nullable=False)
     location_found = db.Column(db.String(255), nullable=False)
     date_found = db.Column(db.DateTime, nullable=False)
@@ -41,7 +38,7 @@ class FoundItem(db.Model):
     claims = db.relationship('ClaimRequest', backref='found_item_claimed', lazy=True)
 
 class Category(db.Model):
-    __tablename__ = 'categories'
+    __tablename__ = 'category'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), unique=True, nullable=False)
     lost_items = db.relationship('LostItem', backref='category', lazy=True)
@@ -63,7 +60,7 @@ class ClaimRequest(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('student.id'), nullable=False)
     found_item_id = db.Column(db.Integer, db.ForeignKey('found_item.id'), nullable=False)
-    admin_id = db.Column(db.Integer, db.ForeignKey('admins.id'), nullable=True)
+    admin_id = db.Column(db.Integer, db.ForeignKey('admin.id'), nullable=True)  # Fixed table reference
     status = db.Column(db.String(50), nullable=False)
     claim_date = db.Column(db.DateTime, default=datetime.utcnow)
 
@@ -75,9 +72,9 @@ class Notification(db.Model):
     timestamp = db.Column(db.DateTime, default=datetime.utcnow)
     status = db.Column(db.String(50), nullable=False)
 
-class Admin(db.Model):
-    __tablename__ = 'admins'
+class Admin(db.Model, UserMixin):  # Ensuring compatibility with Flask-Login
+    __tablename__ = 'admin'
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('student.id'), nullable=False)
+    email = db.Column(db.String(100), unique=True, nullable=False)  # Added email field
+    password = db.Column(db.String(255), nullable=False)  # Added password field
     permissions = db.Column(db.String(255), nullable=False)
-
