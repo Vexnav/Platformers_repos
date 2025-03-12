@@ -40,19 +40,28 @@ def home():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
+    # 'User' was not found- this line threw error: user = User.query.filter_by(username=form.username.data).first()
+    '''
     if form.validate_on_submit():
         # Assume we have a user lookup function
+        
         user = User.query.filter_by(username=form.username.data).first()
+
         if user and check_password_hash(user.password, form.password.data):
             return redirect(url_for('dashboard'))
         else:
             flash('Login Failed. Please check your credentials.', 'danger')
+
+    '''
     return render_template('login.html', form=form)
 
+
+#Variable 'Item' was not found-threw and error. See code below.
+#return line of code was changed, items was removed. Previous code was: return render_template('admin_dashboard.html', items=items)
 @app.route('/dashboard')
 def dashboard():
-    items = Item.query.all()
-    return render_template('dashboard.html', items=items)
+   # items = Item.query.all()   
+    return render_template('admin_dashboard.html')
 
 @app.route('/report_item', methods=['GET', 'POST'])
 
@@ -70,14 +79,20 @@ def report_item():
                 image_url = None  
         else:
             image_url = None
+
+        '''
         item = Item(name=form.name.data,   description=form.description.data, location=form.location.data,   item_type=form.item_type.data, image_url=image_url)
         db.session.add(item)
+        '''
         db.session.commit()
         flash(f'Item "{form.name.data}" has been reported successfully!', 'success')
         return redirect(url_for('dashboard'))
     
     return render_template('report_item.html', form=form)
 
+#MatchItemForm is not declared in forms.py yet.
+
+'''
 @app.route('/match_item/<item_id>', methods=['GET', 'POST'])
 def match_item(item_id):
     form = MatchItemForm()
@@ -94,5 +109,12 @@ def match_item(item_id):
 def logout():
     return redirect(url_for('home'))
 
+    
+'''
+
+
+#This is the last lines of code to run the app
 if __name__ == '__main__':
     app.run(debug=True)
+
+
