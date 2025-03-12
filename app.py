@@ -13,7 +13,8 @@ from models import Admin, Student
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///lost_and_found.db'
-#app.config['SECRET_KEY'] = AnySecretCode
+#Secret key is default:
+app.config['SECRET_KEY'] = 'AnySecretCode'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['UPLOAD_FOLDER'] = 'static/images'
 app.config['ALLOWED_EXTENSIONS'] = {'jpg', 'jpeg', 'png', 'gif'}
