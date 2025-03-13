@@ -36,28 +36,26 @@ def create_app():
     def home():
         return render_template('home.html')
 
-@app.route('/index', methods=['GET'])
-def index():
-    query = request.args.get('q', '')  
+    @app.route('/index', methods=['GET'])
+    def index():
+        query = request.args.get('q', '')  
 
-    if query:
-        items = LostItem.query.filter(
-            (LostItem.item_name.ilike(f"%{query}%")) |
-            (LostItem.description.ilike(f"%{query}%")) |
-            (LostItem.last_seen_location.ilike(f"%{query}%"))
-        ).all()
-    else:
-        items = LostItem.query.all()  
+        if query:
+            items = LostItem.query.filter(
+                (LostItem.item_name.ilike(f"%{query}%")) |
+                (LostItem.description.ilike(f"%{query}%")) |
+                (LostItem.last_seen_location.ilike(f"%{query}%"))
+            ).all()
+        else:
+            items = LostItem.query.all()  
 
-    return render_template('index.html')
+        return render_template('index.html', items=items)
 
     @app.route('/report', methods=['GET', 'POST'])
     def report():
         categories = Category.query.all()  
         if request.method == 'POST':
             item_name = request.form.get('item_name')
-
-            category_id = int(request.form.get('category_id'))  
             category_id = request.form.get('category')
             if category_id is not None and category_id.isdigit():  
                 category_id = int(category_id)
@@ -150,8 +148,9 @@ def index():
     @app.route('/admin/dashboard', methods=['GET'])
     @login_required
     def admin_dashboard():
-        items = LostItem.query.all()
-        return render_template('admin_dashboard.html', items=items)
+        lost_items = LostItem.query.all()
+        found_items = FoundItem.query.all()
+        return render_template('admin_dashboard.html', lost_items=lost_items, found_items=found_items)
 
     @app.route('/admin/update/<int:item_id>', methods=['POST'])
     @login_required
