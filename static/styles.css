@@ -1,4 +1,4 @@
-/* General Styles */
+
 html, body {
     background: linear-gradient(135deg, #87CEEB, #32CD32);
     font-family: Arial, sans-serif;
@@ -24,7 +24,6 @@ html, body {
     margin-top: auto;
 }
 
-/* Navigation Bar Styles */
 nav {
     background-color: rgba(255, 255, 255, 0.8);
     padding: 10px 20px;
@@ -37,7 +36,7 @@ nav {
 nav .logo {
     font-size: 24px;
     font-weight: bold;
-    color: black; /* Logo text color changed to black */
+    color: black; 
 }
 
 nav .nav-links {
@@ -48,16 +47,16 @@ nav .nav-links {
 
 nav .nav-links a {
     text-decoration: none;
-    color: black; /* Nav links color changed to black */
+    color: black; 
     font-size: 16px;
 }
 
 nav .nav-links a:hover {
-    color: #32CD32; /* Green on hover */
+    color: #32CD32; 
 }
 
 nav .login-button {
-    background-color: blue; /* Login button changed to blue */
+    background-color: blue;  
     color: white;
     border: none;
     padding: 10px 20px;
@@ -67,10 +66,9 @@ nav .login-button {
 }
 
 nav .login-button:hover {
-    background-color: darkblue; /* Darker blue on hover */
+    background-color: darkblue; 
 }
 
-/* Form Styles */
 .form-container {
     background: #ffffff;
     padding: 30px;
@@ -104,7 +102,6 @@ button:hover {
     background-color: #0056b3;
 }
 
-/* Hero Section */
 .hero {
     text-align: center;
     padding: 50px 20px;
@@ -124,7 +121,6 @@ button:hover {
     color: white;
 }
 
-/* Page Header */
 .page-header {
     text-align: center;
     padding: 40px 20px;
@@ -137,7 +133,6 @@ button:hover {
     margin-bottom: 80px;
 }
 
-/* Card Styles */
 .card {
     background: #765d5d;
     padding: 3px;
@@ -163,7 +158,6 @@ button:hover {
     gap: 0px;
 }
 
-/* Login Container */
 .login-container {
     background-color: #ffffff;
     padding: 2rem;
@@ -215,7 +209,6 @@ button:hover {
     font-size: 0.9rem;
 }
 
-/* Additional Styles */
 h1 {
     color: blue;
 }
