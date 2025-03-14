@@ -9,7 +9,6 @@ from config import Config
 from extensions import db
 from models import Student, LostItem, FoundItem, Category, Match, Notification, ClaimRequest, Admin
 
-# login manager
 login_manager = LoginManager()
 login_manager.login_view = 'login'
 

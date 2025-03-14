@@ -2,7 +2,7 @@ from extensions import db
 from flask_login import UserMixin
 from datetime import datetime
 
-class Student(db.Model, UserMixin):  # Ensuring compatibility with Flask-Login
+class Student(db.Model, UserMixin): 
     __tablename__ = 'student'
     id = db.Column(db.Integer, primary_key=True)
     fullname = db.Column(db.String(100), nullable=False)
@@ -15,7 +15,7 @@ class Student(db.Model, UserMixin):  # Ensuring compatibility with Flask-Login
 class LostItem(db.Model):
     __tablename__ = 'lost_item'
     id = db.Column(db.Integer, primary_key=True)
-    category_id = db.Column(db.Integer, db.ForeignKey('category.id'), nullable=False)  # Fixed table reference
+    category_id = db.Column(db.Integer, db.ForeignKey('category.id'), nullable=False)  
     item_name = db.Column(db.String(100), nullable=False)
     last_seen_location = db.Column(db.String(255), nullable=False)
     date_lost = db.Column(db.DateTime, nullable=False)
@@ -72,9 +72,9 @@ class Notification(db.Model):
     timestamp = db.Column(db.DateTime, default=datetime.utcnow)
     status = db.Column(db.String(50), nullable=False)
 
-class Admin(db.Model, UserMixin):  # Ensuring compatibility with Flask-Login
+class Admin(db.Model, UserMixin):  
     __tablename__ = 'admin'
     id = db.Column(db.Integer, primary_key=True)
-    email = db.Column(db.String(100), unique=True, nullable=False)  # Added email field
-    password = db.Column(db.String(255), nullable=False)  # Added password field
+    email = db.Column(db.String(100), unique=True, nullable=False)  
+    password = db.Column(db.String(255), nullable=False) 
     permissions = db.Column(db.String(255), nullable=False)
