@@ -79,10 +79,3 @@ CREATE TABLE notifications (
     timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
 );
-CREATE TABLE images (
-    image_id INT AUTO_INCREMENT PRIMARY KEY,
-    item_id INT NOT NULL,
-    item_type ENUM('lost', 'found') NOT NULL,
-    image_data LONGBLOB NOT NULL,  -- Stores the actual image
-    FOREIGN KEY (item_id) REFERENCES lost_items(lost_item_id) ON DELETE CASCADE
-);
