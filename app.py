@@ -4,6 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 from werkzeug.utils import secure_filename
 from flask_mail import Message, Mail
+from flask import jsonify
 from werkzeug.security import check_password_hash, generate_password_hash
 from itsdangerous import URLSafeTimedSerializer
 from datetime import datetime
@@ -258,7 +259,7 @@ def report_found():
         image = None
         if form.image.data:
             try:
-                image_filename = images.save(form.image.data)
+                image_filename = image.save(form.image.data)
             except Exception as e:
                 flash('Image upload failed. Please try again.', 'danger')
                 image_filename = None 
@@ -287,6 +288,12 @@ def report_found():
 @app.route('/admin_dashboard', methods=['GET', 'POST'])
 @login_required
 def admin_dashboard():
+    # Ensure the user is an admin
+    if not isinstance(current_user, Admin):
+        flash("You do not have permission to access this page.", "danger")
+        return redirect(url_for('home'))
+
+    # Fetch data for the dashboard
     locations = Location.query.all()
     categories = Category.query.all()
     admins = Admin.query.all()
@@ -316,7 +323,15 @@ def admin_dashboard():
 
         return redirect(url_for('admin_dashboard'))
 
-    return render_template('admin_dashboard.html', lost_items=lost_items, locations=locations, admins=admins,categories=categories, found_items=found_items, reviews=reviews )
+    return render_template('admin_dashboard.html', 
+                           lost_items=lost_items, 
+                           locations=locations, 
+                           admins=admins, 
+                           categories=categories, 
+                           found_items=found_items, 
+                           reviews=reviews)
+
+
 
 @app.route('/edit_admin/<int:admin_id>', methods=['GET', 'POST'])
 @login_required
@@ -464,5 +479,46 @@ with app.app_context():
         db.session.commit()
         print("Default admin created with username: 'AdmnDUT' and password: '$$Dut12345'")
 
+
+
+
+@app.route('/api/dashboard-data')
+@login_required
+def dashboard_data():
+    # Ensure the user is an admin
+    if not isinstance(current_user, Admin):
+        return jsonify({"error": "Unauthorized access"}), 403
+
+    # Fetch statistics for the dashboard
+    lost_items_count = LostItem.query.count()
+    found_items_count = FoundItem.query.count()
+
+    # Logic to calculate matched items
+    matched_items_count = db.session.query(LostItem).join(FoundItem, LostItem.item_name == FoundItem.item_name).count()
+
+    # Logic to calculate returned items
+    returned_items_count = LostItem.query.filter(LostItem.status == 'Returned').count()
+
+    # Logic to calculate disposed items
+    disposed_items_count = LostItem.query.filter(LostItem.status == 'Disposed').count() + \
+                          FoundItem.query.filter(FoundItem.status == 'Disposed').count()
+
+    # Example of recent items (Customize if necessary later on)
+    recent_lost_items = LostItem.query.order_by(LostItem.date_lost.desc()).limit(5).all()
+    recent_found_items = FoundItem.query.order_by(FoundItem.date_found.desc()).limit(5).all()
+
+    return jsonify({
+        "stats": {
+            "lostItemsCount": lost_items_count,
+            "foundItemsCount": found_items_count,
+            "matchedItemsCount": matched_items_count,
+            "returnedItemsCount": returned_items_count,
+            "disposedItemsCount": disposed_items_count
+        },
+        "recentLostItems": [{"itemName": item.item_name, "description": item.description} for item in recent_lost_items],
+        "recentFoundItems": [{"itemName": item.item_name, "description": item.description} for item in recent_found_items],
+    })
+
 if __name__ == '__main__':
     app.run(debug=True)
+
