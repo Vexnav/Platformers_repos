@@ -512,29 +512,7 @@ def report_lost():
     categories = Category.query.all()
     locations = Location.query.all()
     form = ReportLostItemForm()
-    matches = []
-
-    new_category = request.form.get('new_category')
-    new_location = request.form.get('new_location')
-
-    if new_category:
-        if new_category.strip():
-            category = Category(name=new_category.strip())
-            db.session.add(category)
-            db.session.commit()
-            flash(f"New category '{new_category}' added.", "success")
-        else:
-            flash("Category name cannot be empty.", "danger")
-    
-    if new_location:
-        if new_location.strip():
-            location = Location(name=new_location.strip())
-            db.session.add(location)
-            db.session.commit()
-            flash(f"New location '{new_location}' added.", "success")
-        else:
-            flash("Location name cannot be empty.", "danger")
-
+    matches = [] 
     if request.method == 'POST':
         item_name = request.form.get('item_name')
         category_id = request.form.get('category_id')
@@ -592,27 +570,6 @@ def item():
     locations = Location.query.all()
     form = ReportFoundItemForm()
     matches = []
-
-    new_category = request.form.get('new_category')
-    new_location = request.form.get('new_location')
-
-    if new_category:
-        if new_category.strip():
-            category = Category(name=new_category.strip())
-            db.session.add(category)
-            db.session.commit()
-            flash(f"New category '{new_category}' added.", "success")
-        else:
-            flash("Category name cannot be empty.", "danger")
-    
-    if new_location:
-        if new_location.strip():
-            location = Location(name=new_location.strip())
-            db.session.add(location)
-            db.session.commit()
-            flash(f"New location '{new_location}' added.", "success")
-        else:
-            flash("Location name cannot be empty.", "danger")
 
     if request.method == 'POST':
         item_name = request.form.get('item_name')
