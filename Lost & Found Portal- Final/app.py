@@ -961,10 +961,6 @@ def reviews():
 @app.route('/admin/reviews')
 @login_required
 def admin_reviews():
-    if not current_user.is_admin: 
-        flash("Access denied! Admins only.", "danger")
-        return redirect(url_for('home'))
-
     all_reviews = Review.query.order_by(Review.timestamp.desc()).all()
     return render_template('admin_reviews.html', reviews=all_reviews)
 
