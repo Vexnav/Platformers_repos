@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DUT Lost & Found Portal-Terms</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+  <link href="/static/styles.css" rel="stylesheet">
+</head>
+<body><nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container">
+      <a class="navbar-brand d-flex align-items-center" href="/">
+          <img src="/static/images/dut_logo.png" alt="DUT Logo" style="height: 40px; margin-right: 10px;"> 
+          DUT Lost Item Portal
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+              <li class="nav-item">
+                  <a class="nav-link" href="{{ url_for('index') }}">
+                      <i class="fas fa-search"></i> Browse Items
+                  </a>
+              </li>
+              <li class="nav-item">
+                  <a class="nav-link" href="{{ url_for('login') }}">
+                      <i class="fas fa-sign-in-alt"></i> Sign In
+                  </a>
+              </li>
+          </ul>
+      </div>
+  </div>
+</nav>
+
+    <div class="container mt-5">
+      <h4 class="text-center">Terms and Conditions</h4>
+      <p>
+          By accessing and using the DUT Lost and Found Portal (the "Portal"), you agree to the following terms and conditions:
+      </p>
+  
+      <h2>Usage Guidelines</h2>
+      <ul>
+          <li>The Portal is intended solely for reporting and browsing lost and found items within the DUT campus and community.</li>
+          <li>Users must provide accurate and complete information when listing lost or found items, including descriptions, locations, and dates.</li>
+          <li>All interactions on the Portal must adhere to respectful and ethical communication practices.</li>
+          <li>Abusive or fraudulent behavior, including false claims or listings, is strictly prohibited and may result in account suspension, termination, or further legal action.</li>
+      </ul>
+  
+      <h2>Ownership and Responsibility</h2>
+      <ul>
+          <li>Users submitting reports of lost or found items affirm that they have a legitimate claim or have genuinely found an item and intend to return it to its rightful owner.</li>
+          <li>The Durban University of Technology is not responsible for disputes that may arise over ownership claims. The resolution of ownership disputes lies solely with the involved parties.</li>
+          <li>DUT reserves the right to investigate and remove any item listing that appears to be false, malicious, or in violation of these terms.</li>
+      </ul>
+  
+      <h2>Liability</h2>
+      <p>
+          The DUT Lost and Found Portal acts as a facilitator to help connect individuals with their lost or found items. DUT does not guarantee the accuracy, legitimacy, or resolution of claims made by users. By using the Portal, you agree that:
+      </p>
+      <ul>
+          <li>DUT is not liable for the loss or damage of items while using the Portal.</li>
+          <li>Any arrangements made between users regarding returning items are made solely at their discretion and responsibility.</li>
+          <li>The Portal does not assume responsibility for any miscommunication, misunderstandings, or fraudulent activity between users.</li>
+      </ul>
+  
+      <h2>Data Collection and Usage</h2>
+      <p>
+          By using the Portal, you consent to the collection, storage, and usage of personal data (e.g., name, contact information) for the purpose of facilitating the lost and found process. For more details, please refer to the <a href="{{url_for('privacy_policy')}}">Privacy Policy</a>.
+      </p>
+      <ul>
+          <li>Data collected is used only for the administration of the lost and found system and improving user experience.</li>
+          <li>User data will not be shared with third parties without explicit consent, except as required by law or for security purposes.</li>
+      </ul>
+  
+      <h2>Changes to Terms and Conditions</h2>
+      <p>
+          DUT reserves the right to amend these terms and conditions at any time. Users will be notified of changes through updates on the Portal. Continued usage of the Portal after changes are posted indicates acceptance of the revised terms.
+      </p>
+  
+      <h2>Contact and Support</h2>
+      <p>
+          For any inquiries, concerns, or feedback regarding these terms or the Portal, please contact the Lost and Found Help Desk at <a href="mailto:lostandfound@dut.ac.za">lostandfound@dut.ac.za</a> or visit us on campus at the Help Center, Room 101.
+      </p>
+   </div>
+  
+   <footer class="bg-light text-dark py-4 mt-auto">
+        <div class="text-center">
+           <p>© 2025 DUT Lost and Found Portal. All rights reserved.</p>
+           <a href="{{url_for('privacy_policy')}}" class="text-primary me-3">
+                <i class="fas fa-user-shield"></i> Privacy Policy
+           </a>
+           <a href="{{url_for('about')}}" class="text-primary">
+                <i class="fas fa-file-about"></i> About Us
+           </a>
+        </div>
+    </footer>
+</body>
+</html>

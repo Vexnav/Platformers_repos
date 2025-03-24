@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Durban University of Technology - Lost and Found Portal</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+  <link href="/static/style.css" rel="stylesheet">
+  <style>
+    html, body {
+      height: 100%;
+      margin:0;
+      background: linear-gradient(to right, #2ecc71, #3498db); 
+      font-family:'Times New Roman', Times, serif;
+      font-size: 20px;
+      display: flex;
+      flex-direction: column;
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+      <a class="navbar-brand" href="/">DUT Lost Item Portal</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="{{url_for('index')}}">
+              <i class="fas fa-search"></i> Browse Items
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{url_for('register')}}">
+              <i class="fas fa-user-plus"></i> Sign Up
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{url_for('login')}}">
+              <i class="fas fa-sign-in-alt"></i> Sign In
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container mt-4 flex-grow-1">
+    <h4 class="text-center mb-4">Welcome to the Lost & Found Portal</h4>
+    <p class="text-center mb-5">Connecting people to their lost belongings effortlessly.</p>
+
+    <div class="row align-items-center mb-5">
+      <div class="col-md-6 text-center">
+        <img src="/static/images/ManWithWallet.png" alt="Lost Items" class="img-fluid" style="max-height: 300px;">
+      </div>
+      <div class="col-md-6">
+        <h2>Have You Lost Something?</h2>
+        <p>Report your lost items here, and let us help you reconnect with them. Our portal is designed to make the process easy and quick. Browse through found items reported by others to see if your belonging has been found.</p>
+        <a href="/report" class="btn btn-primary btn-lg mt-3">
+          <i class="fas fa-clipboard"></i> Report Lost Item
+        </a>
+      </div>
+    </div>
+
+    <div class="row align-items-center mb-5">
+      <div class="col-md-6 order-md-2 text-center">
+        <img src="/static/images/ManDropPhone.png" alt="Found Items" class="img-fluid" style="max-height: 300px;">
+      </div>
+      <div class="col-md-6 order-md-1">
+        <h2>Have You Found Something?</h2>
+        <p>Found something that doesn't belong to you? Report it here and help its rightful owner reclaim it. Together, we can create a community of kindness and responsibility.</p>
+        <a href="/report_found" class="btn btn-outline-primary btn-lg mt-3">
+          <i class="fas fa-clipboard-check"></i> Report Found Item
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="container my-5">
+    <div class="row text-center">
+        <div class="col-md-4">
+            <h2 class="text-primary">{{ total_items_reported }}</h2>
+            <p>Items Reported</p>
+        </div>
+        <div class="col-md-4">
+            <h2 class="text-success">{{ items_found }}</h2>
+            <p>Items Found</p>
+        </div>
+        <div class="col-md-4">
+            <h2 class="text-warning">{{ match_rate|round(2) }}%</h2>
+            <p>Match Rate</p>
+        </div>
+    </div>
+  </div>
+
+  <div class="container mt-5">
+    <h2 class="text-center mb-4">Frequently Asked Questions</h2>
+    <div class="accordion" id="faqAccordion">
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingOne">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                    How do I report a lost item?
+                </button>
+            </h2>
+            <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">
+                    First create an account if you don't have an account. Then login, then you can click on the "Report Lost Item" button and provide details about the item, such as its name, description, and the location where you lost it.
+                </div>
+            </div>
+        </div>
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingTwo">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                    What happens after I report a found item?
+                </button>
+            </h2>
+            <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">
+                    Once you report a found item, it will be listed on the portal for others to browse. If a match is found, you will be notified to arrange the item's return.
+                </div>
+            </div>
+        </div>
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingThree">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                    Is my personal information secure on the portal?
+                </button>
+            </h2>
+            <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">
+                    Yes, we take data privacy very seriously. Your personal information is only used for facilitating matches and is not shared with third parties without your consent.
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
+
+  <div class="container mt-5">
+    <h2 class="text-center mb-4">What Our Users Say</h2>
+    <div class="row">
+        {% for review in reviews %}
+        <div class="col-md-4">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <p class="card-text">{{ review.content }}</p>
+                    <h5 class="card-title">- {{ review.username }}</h5>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+  </div>
+
+  <footer class="bg-light text-dark py-4 mt-auto">
+    <div class="text-center">
+      <p>© 2025 DUT Lost and Found Portal. All rights reserved.</p>
+      <a href="{{url_for('privacy_policy')}}" class="text-primary me-3">
+        <i class="fas fa-user-shield"></i> Privacy Policy
+      </a>
+      <a href="{{url_for('terms_and_conditions')}}" class="text-primary">
+        <i class="fas fa-file-contract"></i> Terms of Service
+      </a>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
