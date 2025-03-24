@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DUT Lost & Found Portal-Search Results</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link href="/static/styles.css" rel="stylesheet">
+</head>
+<body class="d-flex flex-column min-vh-100">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+          <a class="navbar-brand" href="/">DUT Lost Item Portal</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+              <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('index') }}">
+                  <i class="fas fa-search"></i> Browse Items
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <h1>Search Results for "{{ query }}"</h1>
+        
+        {% if lost_items|length == 0 and found_items|length == 0 %}
+        <div class="alert alert-warning text-center">
+            No items found matching "{{ query }}".
+        </div>
+        {% endif %}
+        
+        {% if lost_items|length > 0 %}
+        <div class="row">
+          {% for item in lost_items %}
+          <div class="col-md-4 mb-4">
+            <div class="card">
+              {% if item.image %}
+              <img src="{{ url_for('static', filename='images/' + item.image) }}" class="card-img-top img-thumbnail" alt="{{ item.item_name }}">
+              {% endif %}
+              <div class="card-body">
+                <h5 class="card-title">{{ item.item_name }}</h5>
+                <p class="card-text">
+                  <small class="text-muted">Lost on: {{ item.date_lost }}, Location: {{ item.location_id }}</small>
+                </p>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+        {% endif %}
+        
+        {% if found_items|length > 0 %}
+        <div class="row">
+          {% for item in found_items %}
+          <div class="col-md-4 mb-4">
+            <div class="card">
+              {% if item.image %}
+              <img src="{{ url_for('static', filename='images/' + item.image) }}" class="card-img-top img-thumbnail" alt="{{ item.item_name }}">
+              {% endif %}
+              <div class="card-body">
+                <h5 class="card-title">{{ item.item_name }}</h5>
+                <p class="card-text">
+                  <small class="text-muted">Found on: {{ item.date_found }}, Location: {{ item.location_id }}</small>
+                </p>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+      
+    <footer class="bg-light text-dark py-4 mt-auto">
+        <div class="text-center">
+          <p>© 2025 DUT Lost and Found Portal. All rights reserved.</p>
+          <a href="{{ url_for('privacy_policy') }}" class="text-primary me-3">
+            <i class="fas fa-user-shield"></i> Privacy Policy
+          </a>
+          <a href="{{ url_for('about') }}" class="text-primary me-3">
+            <i class="fas fa-info-circle"></i> About Us
+          </a>
+          <a href="{{ url_for('terms_and_conditions') }}" class="text-primary">
+            <i class="fas fa-file-contract"></i> Terms of Service
+          </a>
+        </div>
+    </footer>
+</body>
+</html>
