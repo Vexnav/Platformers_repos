@@ -59,52 +59,16 @@
               {% for category in categories %}
               <option value="{{ category.name }}">{{ category.name }}</option>
               {% endfor %}
-              <option value="other">Other</option>
           </select>
         </div>
-      
-        <div class="modal fade" id="categoryModal" tabindex="-1" aria-labelledby="categoryModalLabel" aria-hidden="true">
-          <div class="modal-dialog">
-              <div class="modal-content">
-                  <div class="modal-header">
-                      <h5 class="modal-title" id="categoryModalLabel">Add New Category</h5>
-                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                  </div>
-                  <div class="modal-body">
-                      <input type="text" id="new_category" class="form-control" placeholder="Enter new category name">
-                  </div>
-                  <div class="modal-footer">
-                      <button type="submit" class="btn btn-primary" onclick="addNewOption('category_id', 'new_category', 'categoryModal')">Save</button>
-                  </div>
-              </div>
-          </div>
-        </div>
-      
+    
         <div class="mb-3">
           <label for="location_id" class="form-label">Item Last Seen Location</label>
           <select name="location_id" id="location_id" class="form-select" required onchange="checkOtherOption(this, 'locationModal')">
               {% for location in locations %}
               <option value="{{ location.name}}">{{ location.name }}</option>
               {% endfor %}
-              <option value="other">Other</option>
           </select>
-        </div>
-      
-        <div class="modal fade" id="locationModal" tabindex="-1" aria-labelledby="locationModalLabel" aria-hidden="true">
-          <div class="modal-dialog">
-              <div class="modal-content">
-                  <div class="modal-header">
-                      <h5 class="modal-title" id="locationModalLabel">Add New Location</h5>
-                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                  </div>
-                  <div class="modal-body">
-                      <input type="text" id="new_location" class="form-control" placeholder="Enter new location name">
-                  </div>
-                  <div class="modal-footer">
-                      <button type="submit" class="btn btn-primary" onclick="addNewOption('location_id', 'new_location', 'locationModal')">Save</button>
-                  </div>
-              </div>
-          </div>
         </div>
       
         <div class="mb-3">
