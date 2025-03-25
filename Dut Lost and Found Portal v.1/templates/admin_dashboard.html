@@ -4,19 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DUT Lost And Found Portal - Dashboard</title>
-    {% if session['theme'] == 'Dark' %}
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap-dark.min.css" rel="stylesheet">
-    {% else %}
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    {% endif %}
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js"></script>
-    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
     <style>
         :root {
             --primary-color: #2c3e50;
-            --sidebar-gradient-start: #34D399; 
-            --sidebar-gradient-end: #3B82F6; 
+            --sidebar-gradient-start: #34D399; /* Green */
+            --sidebar-gradient-end: #3B82F6; /* Blue */
             --sidebar-text: #f8fafc;
             --main-bg: #f5f5f5;
             --card-bg: white;
@@ -25,6 +19,7 @@
             --found-color: #3498db;
             --matched-color: #2ecc71;
             --returned-color: #27ae60;
+            --disposed-color: #9b59b6;
         }
 
         * {
@@ -33,12 +28,14 @@
             box-sizing: border-box;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
+
         body {
             display: flex;
             min-height: 100vh;
             background-color: var(--main-bg);
         }
 
+        /* Sidebar Styles */
         .sidebar {
             width: 240px;
             background: linear-gradient(to bottom, var(--sidebar-gradient-start), var(--sidebar-gradient-end));
@@ -94,6 +91,8 @@
             width: 20px;
             text-align: center;
         }
+
+        /* Main Content Styles */
         .main-content {
             flex-grow: 1;
             padding: 20px;
@@ -145,6 +144,7 @@
             cursor: pointer;
         }
 
+        /* Stats Cards */
         .stats-container {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -218,6 +218,11 @@
             background-color: var(--returned-color);
         }
 
+        .disposed-card {
+            background-color: var(--disposed-color);
+        }
+
+        /* Content Sections */
         .content-section {
             background-color: var(--card-bg);
             border-radius: 8px;
@@ -237,6 +242,8 @@
             font-size: 1.2rem;
             color: #333;
         }
+
+        /* Search Box */
         .search-box {
             margin-bottom: 10px;
         }
@@ -269,11 +276,13 @@
             cursor: pointer;
         }
 
+        /* Chart Containers */
         .chart-container {
             height: 200px;
             position: relative;
         }
 
+        /* Item Table */
         .recent-items {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -336,6 +345,7 @@
             flex-grow: 1;
         }
 
+        /* Submenu styles */
         .sidebar-nav .submenu {
             max-height: 0;
             overflow: hidden;
@@ -367,6 +377,7 @@
             transform: rotate(90deg);
         }
 
+        /* Responsive Adjustments */
         @media (max-width: 1200px) {
             .stats-container {
                 grid-template-columns: repeat(3, 1fr);
@@ -408,7 +419,8 @@
                 grid-template-columns: repeat(2, 1fr);
             }
         }
-    @media (max-width: 480px) {
+
+        @media (max-width: 480px) {
             .stats-container {
                 grid-template-columns: 1fr;
             }
@@ -422,144 +434,10 @@
                 margin-top: 10px;
             }
         }
-        .sidebar .logout {
-      margin-top: auto;
-      width: 100%;
-    }
-    .search-form {
-      display: flex;
-      justify-content: center;
-      margin-bottom: 20px;
-    }
-
-    .search-form input[type="text"] {
-      flex: 1;
-      padding: 20px;
-      font-size: 16px;
-      border: 1px solid #ced4da;
-      border-radius:4px 0 0 5px;
-      outline: none;
-      width: auto;
-    }
-
-    .search-form button {
-      padding: 10px 20px;
-      font-size: 16px;
-      color: #fff;
-      background-color: #007bff;
-      border: none;
-      border-radius: 0 5px 5px 0;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-    }
-
-    .search-form button:hover {
-      background-color: #0056b3;
-    }
-  
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 20px;
-    }
-
-    .d-flex {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 20px 0;
-    }
-
-    form {
-      width: 100%;
-      max-width: 600px;
-      margin: 0 auto;
-    }
-
-    .form-control {
-      padding: 10px;
-      font-size: 1rem;
-      border: 2px solid #ccc;
-      border-radius: 4px;
-      transition: border 0.3s ease;
-    }
-
-    .form-control:focus {
-      border-color: #007bff;
-      box-shadow: 0 0 8px rgba(0, 123, 255, 0.5);
-    }
-
-    .btn-outline-secondary {
-      padding: 10px 20px;
-      background-color: #007bff;
-      color: white;
-      border: 2px solid #007bff;
-      border-radius: 4px;
-      font-size: 1rem;
-      transition: background-color 0.3s ease;
-   }
-
-    .btn-outline-secondary:hover {
-      background-color: #0056b3;
-      border-color: #0056b3;
-      color: white;
-    }
-
-    .btn-outline-secondary:focus {
-      box-shadow: 0 0 4px rgba(0, 123, 255, 0.5);
-    }
-
-    .mb-4 {
-      margin-bottom: 20px;
-    }
-
-    input[type="text"] {
-      width: calc(100% - 130px); 
-    }
-
-    @media (max-width: 768px) {
-      .d-flex {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-
-      .form-control {
-        width: 100%;
-        margin-bottom: 10px;
-      }
-
-      .btn-outline-secondary {
-        width: 100%;
-      }
-    } 
-    .logout {
-      margin-top: auto;
-      padding: 15px;
-    }
-
-    .logout a {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 10px 20px;
-      background-color: #dc3545; 
-      color: white;
-      border-radius: 4px;
-      text-decoration: none;
-      font-size: 1.2rem;
-      transition: background-color 0.3s ease;
-    }
-
-    .logout a:hover {
-      background-color: #c82333;
-    }
-
-    .logout a i {
-      margin-right: 8px;
-    }
-  </style>
+    </style>
 </head>
 <body>
+    <!-- Sidebar -->
     <aside class="sidebar">
         <div class="sidebar-header">
             <i class="fas fa-recycle"></i>
@@ -569,152 +447,161 @@
             Hello, {{ current_user.username }}
         </div>
         <ul class="sidebar-nav">
+            <li><a href="/dashboard" class="active"><i class="fas fa-th-large"></i> <span>Dashboard</span></a></li>
             <li class="has-submenu">
                 <a href="#" onclick="toggleSubmenu(this)"><i class="fas fa-list"></i> <span>Items</span> <i class="fas fa-chevron-right arrow"></i></a>
                 <div class="submenu">
-                    <a href="{{url_for('lost_items')}}"><i class="fas fa-search"></i> <span>Lost Items</span></a>
-                    <a href="{{url_for('found_items')}}"><i class="fas fa-box-open"></i> <span>Found Items</span></a>
-                    <a href="{{url_for('matched_items')}}"><i class="fas fa-link"></i> <span>Matched Items</span></a>
+                    <a href="/lost-items"><i class="fas fa-search"></i> <span>Lost Items</span></a>
+                    <a href="/found-items"><i class="fas fa-box-open"></i> <span>Found Items</span></a>
+                    <a href="/matched-items"><i class="fas fa-link"></i> <span>Matched Items</span></a>
                 </div>
             </li>
-            <li><a href="{{ url_for('admin_claims') }}" class="btn btn-primary"><i class="fas fa-clipboard-check"></i>Manage Claims</a></li>
-            <li><a class="nav-link" href="{{ url_for('admin_reviews') }}"><i class="bi bi-chat-left-text"></i> Manage Reviews</a></li>
-            <li><a href="{{ url_for('manage_admin') }}" class="btn btn-primary"><i class="fas fa-cogs"></i> Manage Admin</a></li>
-            <li><a href="{{url_for('manage_categories')}}"><i class="fas fa-tags"></i> <span>Categories</span></a></li>
-            <li><a href="{{url_for('manage_locations')}}"><i class="fas fa-map-marker-alt"></i> <span>Locations</span></a></li>
-            <li><a href="{{url_for('reports')}}"><i class="fas fa-chart-bar"></i> <span>Reports</span></a></li>
-            <div class="logout" style="margin-top: auto; padding: 15px;">
-              <a href="{{ url_for('logout') }}" class="btn btn-danger d-block">
-                  <i class="fas fa-sign-out-alt"></i> Logout
-              </a>
-            </div>
-            <div id="settings-panel" class="col-md-3 bg-white p-4 shadow position-fixed end-0 vh-100" style="display: none;">
-              <h3>Settings</h3>
-              <form id="settings-form" method="POST">
-                  <div class="mb-3">
-                      <label for="theme" class="form-label">Theme</label>
-                      <select name="theme" class="form-control" id="theme">
-                          <option value="Light">Light</option>
-                          <option value="Dark">Dark</option>
-                      </select>
-                  </div>
-
-                  <div class="mb-3">
-                      <label for="notifications_enabled" class="form-label">Enable Notifications</label>
-                      <input type="checkbox" name="notifications_enabled" class="form-check-input" id="notifications_enabled">
-                  </div>
-
-                  <div class="mb-3">
-                      <label for="items_per_page" class="form-label">Items per Page in Reports</label>
-                      <input type="number" name="items_per_page" class="form-control" id="items_per_page" value="10">
-                  </div>
-
-                  <button type="submit" class="btn btn-primary">Save Settings</button>
-                  <button type="button" id="close-settings" class="btn btn-secondary">Close</button>
-              </form>
-           </div>
+            <li><a href="/categories"><i class="fas fa-tags"></i> <span>Categories</span></a></li>
+            <li><a href="/locations"><i class="fas fa-map-marker-alt"></i> <span>Locations</span></a></li>
+            <li><a href="/reports"><i class="fas fa-chart-bar"></i> <span>Reports</span></a></li>
+            <li><a href="/settings"><i class="fas fa-cog"></i> <span>Settings</span></a></li>
         </ul>
     </aside>
 
+    <!-- Main Content -->
     <main class="main-content">
         <div class="header">
             <h1>Dashboard</h1>
             <div class="action-buttons">
-              <a href="{{url_for('lost_items')}}"><i class="fas fa-search"></i> <span>Lost </span></a>
-              <a href="{{url_for('found_items')}}"><i class="fas fa-box-open"></i> <span>Found </span></a>
-              <a href="{{url_for('recent_items')}}" class="report-btn"><i class="fas fa-chart-line"></i> Recent</a>
+                <a href="/lost-items/add" class="lost-btn"><i class="fas fa-search"></i> Lost</a>
+                <a href="/found-items/add" class="found-btn"><i class="fas fa-box-open"></i> Found</a>
+                <a href="/reports" class="report-btn"><i class="fas fa-chart-line"></i> Recent</a>
+                <div class="user-dropdown">
+                    <a href="#"><i class="fas fa-user"></i> Demo User</a>
+                </div>
             </div>
         </div>
 
+        <!-- Stats Cards -->
         <div class="stats-container">
-          <div class="stat-card lost-card">
-              <h3 id="lost_count">{{ stats.lost_count }}</h3>
-              <p>Reported lost</p>
-              <div class="icon">
-                  <i class="fas fa-search"></i>
-              </div>
-              <a href="/lost_items" class="view-all">View all items <i class="fas fa-chevron-right"></i></a>
-          </div>
-          <div class="stat-card found-card">
-              <h3 id="found_count">{{ stats.found_count }}</h3>
-              <p>Items found</p>
-              <div class="icon">
-                  <i class="fas fa-box-open"></i>
-              </div>
-              <a href="/found_items" class="view-all">View all items <i class="fas fa-chevron-right"></i></a>
-          </div>
-          <div class="stat-card matched-card">
-              <h3 id="matched_count">{{ stats.matched_count }}</h3>
-              <p>Items matched</p>
-              <div class="icon">
-                  <i class="fas fa-link"></i>
-              </div>
-              <a href="/matched_items" class="view-all">View all items <i class="fas fa-chevron-right"></i></a>
-          </div>
-        </div>
-        <div class="container mt-4 flex-grow-1">
-          <form method="GET" action="/admin_dashboard" class="d-flex mb-4">
-            <input type="text" name="q" class="form-control me-2" placeholder="Search for items..." value="{{ query }}">
-            <button class="btn btn-outline-secondary" type="submit">Search</button>
-          </form>
-        </div>
-        <div class="container mt-5">
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="content-section">
-                        <div class="section-header">
-                            <h3>Lost Items in the Last 30 Days</h3>
-                        </div>
-                        <canvas id="lostItemsChart"></canvas>
-                    </div>
+            <div class="stat-card lost-card">
+                <h3 id="lost-items-count">61</h3>
+                <p>Reported lost</p>
+                <div class="icon">
+                    <i class="fas fa-search"></i>
                 </div>
-        
-                <div class="col-md-6">
-                    <div class="content-section">
-                        <div class="section-header">
-                            <h3>Found Items in the Last 30 Days</h3>
-                        </div>
-                        <canvas id="foundItemsChart"></canvas>
-                    </div>
+                <a href="/lost-items" class="view-all">View all items <i class="fas fa-chevron-right"></i></a>
+            </div>
+            <div class="stat-card found-card">
+                <h3 id="found-items-count">71</h3>
+                <p>Items found</p>
+                <div class="icon">
+                    <i class="fas fa-box-open"></i>
+                </div>
+                <a href="/found-items" class="view-all">View all items <i class="fas fa-chevron-right"></i></a>
+            </div>
+            <div class="stat-card matched-card">
+                <h3 id="matched-items-count">19</h3>
+                <p>Items matched</p>
+                <div class="icon">
+                    <i class="fas fa-link"></i>
+                </div>
+                <a href="/matched-items" class="view-all">View all items <i class="fas fa-chevron-right"></i></a>
+            </div>
+            <div class="stat-card returned-card">
+                <h3 id="returned-items-count">118</h3>
+                <p>Successfully returned</p>
+                <div class="icon">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <a href="/returned-items" class="view-all">View all items <i class="fas fa-chevron-right"></i></a>
+            </div>
+            <div class="stat-card disposed-card">
+                <h3 id="disposed-items-count">34</h3>
+                <p>Disposed/donated/recycled</p>
+                <div class="icon">
+                    <i class="fas fa-trash-alt"></i>
+                </div>
+                <a href="/disposed-items" class="view-all">View all items <i class="fas fa-chevron-right"></i></a>
+            </div>
+        </div>
+
+        <!-- Quick Search Section -->
+        <div class="content-section">
+            <div class="section-header">
+                <h2>Quick Search</h2>
+            </div>
+            <div class="search-box">
+                <p>Find items quickly by searching right here...</p>
+                <div class="search-input">
+                    <input type="text" placeholder="E.g. LG Nexus, iPhone SE, etc." id="quick-search">
+                    <button type="button"><i class="fas fa-search"></i></button>
                 </div>
             </div>
-        
-            <div class="row mt-5">
-                <div class="col-md-6">
-                    <h4>Recent Lost Items</h4>
-                    <ul id="recent_lost_items">
-                    </ul>
+        </div>
+
+        <!-- Charts Section -->
+        <div class="charts-section">
+            <div class="content-section">
+                <div class="section-header">
+                    <h2>Lost Items <span class="subtitle">in the last month</span></h2>
                 </div>
-                <div class="col-md-6">
-                    <h4>Recent Found Items</h4>
-                    <ul id="recent_found_items">
-                    </ul>
+                <div class="chart-container">
+                    <canvas id="lostItemsChart"></canvas>
+                </div>
+            </div>
+            
+            <div class="content-section">
+                <div class="section-header">
+                    <h2>Found Items <span class="subtitle">in the last month</span></h2>
+                </div>
+                <div class="chart-container">
+                    <canvas id="foundItemsChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Items Section -->
+        <div class="recent-items">
+            <div class="items-list">
+                <h3>Recently Lost Items</h3>
+                <div id="recent-lost-items">
+                    <!-- Items will be populated by JavaScript -->
+                </div>
+            </div>
+            <div class="items-list">
+                <h3>Recently Found Items</h3>
+                <div id="recent-found-items">
+                    <!-- Items will be populated by JavaScript -->
                 </div>
             </div>
         </div>
     </main>
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            // Fetch dashboard data from the server
             fetchDashboardData();
             
+            // Set up quick search functionality
             document.getElementById('quick-search').addEventListener('keypress', function(e) {
                 if (e.key === 'Enter') {
                     quickSearch(this.value);
                 }
             });
+            
+            // Draw initial charts
             drawLostItemsChart([]);
             drawFoundItemsChart([]);
         });
 
+        // Toggle submenu
         function toggleSubmenu(el) {
             const parentLi = el.parentElement;
             parentLi.classList.toggle('active');
             const submenu = parentLi.querySelector('.submenu');
             submenu.classList.toggle('active');
             
+            // Prevent default anchor behavior
             event.preventDefault();
         }
 
+        // Function to fetch dashboard data from the server
         function fetchDashboardData() {
             fetch('/api/dashboard-data')
                 .then(response => response.json())
@@ -727,17 +614,21 @@
                 })
                 .catch(error => {
                     console.error('Error fetching dashboard data:', error);
+                    // Load demo data for development
                     loadDemoData();
                 });
         }
 
+        // Update dashboard statistics
         function updateDashboardStats(stats) {
             document.getElementById('lost-items-count').textContent = stats.lostItemsCount;
             document.getElementById('found-items-count').textContent = stats.foundItemsCount;
             document.getElementById('matched-items-count').textContent = stats.matchedItemsCount;
             document.getElementById('returned-items-count').textContent = stats.returnedItemsCount;
+            document.getElementById('disposed-items-count').textContent = stats.disposedItemsCount;
         }
 
+        // Function to update recent lost items
         function updateRecentLostItems(items) {
             const container = document.getElementById('recent-lost-items');
             container.innerHTML = '';
@@ -748,8 +639,9 @@
             });
         }
 
+        // Function to update recent found items
         function updateRecentFoundItems(items) {
-            const container = document.getElementById('recent_found_items');
+            const container = document.getElementById('recent-found-items');
             container.innerHTML = '';
             
             items.forEach(item => {
@@ -758,6 +650,7 @@
             });
         }
 
+        // Create an item element
         function createItemElement(item) {
             const itemDiv = document.createElement('div');
             itemDiv.className = 'item-entry';
@@ -779,15 +672,19 @@
             const detailsDiv = document.createElement('div');
             detailsDiv.className = 'item-details';
             
+            // Add item type
             const typeRow = createDetailRow('Item Type', item.itemType || 'N/A');
             detailsDiv.appendChild(typeRow);
             
+            // Add color
             const colorRow = createDetailRow('Color', item.color || 'N/A');
             detailsDiv.appendChild(colorRow);
             
+            // Add other details
             const otherDetailsRow = createDetailRow('Other Details', item.otherDetails || 'N/A');
             detailsDiv.appendChild(otherDetailsRow);
             
+            // Additional details
             if (item.resolution) {
                 const resolutionRow = createDetailRow('Resolution', item.resolution);
                 detailsDiv.appendChild(resolutionRow);
@@ -804,6 +701,7 @@
             return itemDiv;
         }
 
+        // Create a detail row
         function createDetailRow(label, value) {
             const rowDiv = document.createElement('div');
             rowDiv.className = 'detail-row';
@@ -822,9 +720,11 @@
             return rowDiv;
         }
 
+        // Draw lost items chart
         function drawLostItemsChart(data) {
             const ctx = document.getElementById('lostItemsChart').getContext('2d');
             
+            // Use demo data if no data is provided
             if (!data || data.length === 0) {
                 data = generateDemoChartData();
             }
@@ -858,9 +758,11 @@
             });
         }
 
+        // Draw found items chart
         function drawFoundItemsChart(data) {
             const ctx = document.getElementById('foundItemsChart').getContext('2d');
             
+            // Use demo data if no data is provided
             if (!data || data.length === 0) {
                 data = generateDemoChartData();
             }
@@ -894,12 +796,15 @@
             });
         }
 
+        // Quick search function
         function quickSearch(query) {
             if (query.trim() === '') return;
             
+            // Redirect to search results page
             window.location.href = '/search?q=' + encodeURIComponent(query);
         }
 
+        // Generate demo chart data for development
         function generateDemoChartData() {
             const dates = [];
             const today = new Date();
@@ -907,16 +812,18 @@
             for (let i = 30; i >= 0; i--) {
                 const date = new Date();
                 date.setDate(today.getDate() - i);
-                dates.push(date.toISOString().slice(5, 10)); 
+                dates.push(date.toISOString().slice(5, 10)); // Format as MM-DD
             }
             
             return dates.map(date => ({
                 date: date,
-                count: Math.floor(Math.random() * 8) + 1 
+                count: Math.floor(Math.random() * 8) + 1 // Random count between 1-8
             }));
         }
 
+        // Load demo data for development
         function loadDemoData() {
+            // Demo stats
             updateDashboardStats({
                 lostItemsCount: 61,
                 foundItemsCount: 71,
@@ -925,6 +832,7 @@
                 disposedItemsCount: 34
             });
             
+            // Demo lost items
             updateRecentLostItems([
                 {
                     itemName: 'Pulp Fiction',
@@ -951,6 +859,7 @@
                 }
             ]);
             
+            // Demo found items
             updateRecentFoundItems([
                 {
                     itemName: 'Tommy Glasses',
@@ -978,6 +887,7 @@
                 }
             ]);
             
+            // Draw charts with demo data
             drawLostItemsChart(generateDemoChartData());
             drawFoundItemsChart(generateDemoChartData());
         }

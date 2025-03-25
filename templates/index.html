@@ -19,23 +19,8 @@
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav ms-auto">
           <li class="nav-item">
-            <a class="nav-link" href="/">
-              <i class="fas fa-home"></i> Home
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/report">
-              <i class="fas fa-clipboard"></i> Report Lost Item
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/index">
-              <i class="fas fa-search"></i> Browse Items
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{{url_for('login')}}">
-              <i class="fas fa-sign-in-alt"></i> Sign In
+            <a class="nav-link" href="{{ url_for('dashboard') }}">
+              <i class="fas fa-arrow-left"></i> Back
             </a>
           </li>
         </ul>
@@ -50,31 +35,61 @@
       <input type="text" name="q" class="form-control me-2" placeholder="Search lost items..." value="{{ query }}">
       <button class="btn btn-outline-secondary" type="submit">Search</button>
     </form>
-
-    {% if items %}
-      <ul class="list-unstyled">
-        {% for item in lostitems %}
-          <li class="mb-4 p-3 border rounded">
-            <strong>{{ item.item_name }}</strong><br>
-            <em>{{ item.description }}</em><br>
-            Last seen: {{ item.last_seen_location }}<br>
+    <div class="container mt-4">
+      <h1>Search Results for "{{ query }}"</h1>
+      
+      {% if lost_items|length == 0 and found_items|length == 0 %}
+      <div class="alert alert-warning text-center">
+          No items found matching "{{ query }}".
+      </div>
+      {% endif %}
+      
+      {% if lost_items|length > 0 %}
+      <div class="row">
+        {% for item in lost_items %}
+        <div class="col-md-4 mb-4">
+          <div class="card">
             {% if item.image %}
-              <img src="{{ url_for('static', filename='images/' + item.image) }}" alt="{{ item.item_name }}" width="200" class="img-fluid mt-2">
-            {% else %}
-              <p>No image available.</p>
+            <img src="{{ url_for('static', filename='images/' + item.image) }}" class="card-img-top img-thumbnail" alt="{{ item.item_name }}">
             {% endif %}
-          </li>
+            <div class="card-body">
+              <h5 class="card-title">{{ item.item_name }}</h5>
+              <p class="card-text">
+                <small class="text-muted">Lost on: {{ item.date_lost }}, Location: {{ item.location_id }}</small>
+              </p>
+            </div>
+          </div>
+        </div>
         {% endfor %}
-      </ul>
-    {% else %}
-      <p class="text-center">No items found.</p>
-    {% endif %}
+      </div>
+      {% endif %}
+      
+      {% if found_items|length > 0 %}
+      <div class="row">
+        {% for item in found_items %}
+        <div class="col-md-4 mb-4">
+          <div class="card">
+            {% if item.image %}
+            <img src="{{ url_for('static', filename='images/' + item.image) }}" class="card-img-top img-thumbnail" alt="{{ item.item_name }}">
+            {% endif %}
+            <div class="card-body">
+              <h5 class="card-title">{{ item.item_name }}</h5>
+              <p class="card-text">
+                <small class="text-muted">Found on: {{ item.date_found }}, Location: {{ item.location_id }}</small>
+              </p>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+      {% endif %}
+    </div>
   </div>
 
   <footer class="bg-light text-dark py-4 mt-auto">
     <div class="text-center">
       <p>© 2025 DUT Lost and Found Portal. All rights reserved.</p>
-      <a href="{{url_for ('private_policy')}}" class="text-primary me-3">
+      <a href="{{url_for ('privacy_policy')}}" class="text-primary me-3">
         <i class="fas fa-user-shield"></i> Privacy Policy
       </a>
       <a href="{{url_for('about')}}" class="text-primary">
