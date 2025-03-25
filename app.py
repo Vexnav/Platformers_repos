@@ -15,6 +15,7 @@ from itsdangerous import URLSafeTimedSerializer
 from werkzeug.security import check_password_hash, generate_password_hash
 from models import db, Admin, LostItem, FoundItem, Category, Location, Review, User, MatchedItem, Claim
 from forms import LoginForm, ReportLostItemForm, ReportFoundItemForm, RegistrationForm, ResetPasswordForm, ResetPasswordRequestForm, ReviewForm, UserPortalForm, VerifyCodeForm, ProofOfOwnershipForm
+import pymysql
 
 app = Flask(__name__)
 
