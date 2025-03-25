@@ -3,7 +3,7 @@ from flask_mail import Mail
 
 class Config:
     SECRET_KEY = os.getenv('SECRET_KEY', 'Platformers') 
-    SQLALCHEMY_DATABASE_URI = os.getenv('DATABASE_URL', 'mysql+pymysql://root:Nkambule%40123@localhost/platformersdatabase')
+    SQLALCHEMY_DATABASE_URI = os.getenv('DATABASE_URL', 'mysql+pymysql://root:JXDL86@localhost/platformersdatabase')
     UPLOAD_FOLDER = os.path.join(os.getcwd(), 'static/images')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
