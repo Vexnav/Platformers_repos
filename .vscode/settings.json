@@ -1,0 +1,19 @@
+{
+    "sqltools.connections": [
+        {
+            "mysqlOptions": {
+                "authProtocol": "xprotocol",
+                "enableSsl": "Disabled"
+            },
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 33060,
+            "driver": "MySQL",
+            "name": "Platformers Project",
+            "database": "platformersdatabase",
+            "username": "root",
+            "password": "JXDL86",
+            "connectionTimeout": 1e+21
+        }
+    ]
+}

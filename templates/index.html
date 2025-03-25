@@ -19,23 +19,8 @@
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav ms-auto">
           <li class="nav-item">
-            <a class="nav-link" href="/">
-              <i class="fas fa-home"></i> Home
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/report">
-              <i class="fas fa-clipboard"></i> Report Lost Item
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/index">
-              <i class="fas fa-search"></i> Browse Items
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{{url_for('login')}}">
-              <i class="fas fa-sign-in-alt"></i> Sign In
+            <a class="nav-link" href="{{ url_for('dashboard') }}">
+              <i class="fas fa-arrow-left"></i> Back
             </a>
           </li>
         </ul>
@@ -43,38 +28,50 @@
     </div>
   </nav>
 
-  <div class="container mt-4 flex-grow-1">
-    <h1 class="text-center mb-4">Lost Items</h1>
-
-    <form method="GET" action="/index" class="d-flex mb-4">
-      <input type="text" name="q" class="form-control me-2" placeholder="Search lost items..." value="{{ query }}">
-      <button class="btn btn-outline-secondary" type="submit">Search</button>
+  <div class="container mt-4">
+    <h1 class="text-center">Lost and Found Items</h1>
+    
+    <form method="POST" action="{{ url_for('index') }}" class="d-flex my-3">
+        <input type="text" name="query" class="form-control me-2" placeholder="Search for items..." value="{{ request.args.get('query', '') }}">
+        <button type="submit" class="btn btn-primary">Search</button>
     </form>
 
-    {% if items %}
-      <ul class="list-unstyled">
-        {% for item in lostitems %}
-          <li class="mb-4 p-3 border rounded">
-            <strong>{{ item.item_name }}</strong><br>
-            <em>{{ item.description }}</em><br>
-            Last seen: {{ item.last_seen_location }}<br>
-            {% if item.image %}
-              <img src="{{ url_for('static', filename='images/' + item.image) }}" alt="{{ item.item_name }}" width="200" class="img-fluid mt-2">
+    <div class="row">
+        <div class="col-md-6">
+            <h2 class="text-danger">Lost Items</h2>
+            {% if lost_items %}
+                <ul class="list-group">
+                    {% for item in lost_items %}
+                        <li class="list-group-item">
+                            <strong>{{ item.item_name }}</strong> - {{ item.description }}
+                        </li>
+                    {% endfor %}
+                </ul>
             {% else %}
-              <p>No image available.</p>
+                <p>No lost items found.</p>
             {% endif %}
-          </li>
-        {% endfor %}
-      </ul>
-    {% else %}
-      <p class="text-center">No items found.</p>
-    {% endif %}
-  </div>
+        </div>
+        
+        <div class="col-md-6">
+            <h2 class="text-success">Found Items</h2>
+            {% if found_items %}
+                <ul class="list-group">
+                    {% for item in found_items %}
+                        <li class="list-group-item">
+                            <strong>{{ item.item_name }}</strong> - {{ item.description }}
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>No found items listed.</p>
+            {% endif %}
+        </div>
+    </div>
 
   <footer class="bg-light text-dark py-4 mt-auto">
     <div class="text-center">
       <p>© 2025 DUT Lost and Found Portal. All rights reserved.</p>
-      <a href="{{url_for ('private_policy')}}" class="text-primary me-3">
+      <a href="{{url_for ('privacy_policy')}}" class="text-primary me-3">
         <i class="fas fa-user-shield"></i> Privacy Policy
       </a>
       <a href="{{url_for('about')}}" class="text-primary">
