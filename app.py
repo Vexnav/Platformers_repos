@@ -16,6 +16,7 @@ from itsdangerous import URLSafeTimedSerializer
 from werkzeug.security import check_password_hash, generate_password_hash
 from models import db, Admin, LostItem, FoundItem, Category, Location, Review, User, MatchedItem, Claim
 from forms import LoginForm, ReportLostItemForm, ReportFoundItemForm, RegistrationForm, ResetPasswordForm, ResetPasswordRequestForm, ReviewForm, UserPortalForm, VerifyCodeForm, ProofOfOwnershipForm
+import pymysql
 
 app = Flask(__name__)
 
@@ -140,7 +141,7 @@ def terms_and_conditions():
 def register():
     form = RegistrationForm()
     if form.validate_on_submit():
-<<<<<<< HEAD
+
         existing_user = User.query.filter(or_(User.email == form.email.data, User.username == form.username.data)).first()
         
         if existing_user:
@@ -159,7 +160,7 @@ def register():
 
         send_email_confirmation(new_user)
 
-=======
+
         hashed_password = generate_password_hash(form.password.data)
         new_user = User(
             username=form.username.data,
@@ -172,12 +173,12 @@ def register():
 
         send_email_confirmation(new_user)
 
->>>>>>> d320566b2868d1a457ffbca956a76ec4ccd04999
+
         flash('Registration successful! Please confirm your email before logging in.', 'info')
         return redirect(url_for('login'))
 
     return render_template('register.html', form=form)
-<<<<<<< HEAD
+
 
 def send_email_confirmation(user):
     token = serializer.dumps(user.email, salt='email-confirm-salt')
@@ -470,7 +471,7 @@ def dashboard():
 @login_required
 def index():
     query = ''
-=======
+
 
 def send_email_confirmation(user):
     token = serializer.dumps(user.email, salt='email-confirm-salt')
@@ -614,7 +615,7 @@ def login():
             flash('Invalid credentials. Please try again.', category='error')
 
     return render_template('login.html')  
->>>>>>> d320566b2868d1a457ffbca956a76ec4ccd04999
+
 
 @app.route('/admin_dashboard', methods=['GET', 'POST'])
 @login_required
@@ -639,8 +640,7 @@ def admin_dashboard():
 
     reviews = Review.query.all()
 
-<<<<<<< HEAD
-=======
+
     stats = {
         'lost_count': LostItem.query.count(),
         'found_count': FoundItem.query.count(),
@@ -783,7 +783,7 @@ def index():
     ).all()
     reviews = Review.query.all()
 
->>>>>>> d320566b2868d1a457ffbca956a76ec4ccd04999
+
     return render_template('index.html', lost_items=lost_items, found_items=found_items, reviews=reviews)
 
 @app.route('/search_results', methods=['GET'])
@@ -848,12 +848,9 @@ def report_lost():
     categories = Category.query.all()
     locations = Location.query.all()
     form = ReportLostItemForm()
-<<<<<<< HEAD
+
     matches = []
 
-=======
-    matches = [] 
->>>>>>> d320566b2868d1a457ffbca956a76ec4ccd04999
     if request.method == 'POST':
         item_name = request.form.get('item_name')
         category_id = request.form.get('category_id')
@@ -909,10 +906,10 @@ def report_lost():
 def item():
     categories = Category.query.all()
     locations = Location.query.all()
-<<<<<<< HEAD
-=======
+
+
     form = ReportFoundItemForm()
->>>>>>> d320566b2868d1a457ffbca956a76ec4ccd04999
+
     matches = []
 
     if request.method == 'POST':
@@ -920,42 +917,27 @@ def item():
         category_id = request.form.get('category_id')
         location_id = request.form.get('location_id')
         description = request.form.get('description')
-<<<<<<< HEAD
+
         date_found = request.form.get('date_found')
-=======
->>>>>>> d320566b2868d1a457ffbca956a76ec4ccd04999
+
+
 
         try:
             category_id = int(category_id)
             location_id = int(location_id)
-<<<<<<< HEAD
         except ValueError:
             flash("Invalid category or location selection.", "danger")
             return render_template('item.html', categories=categories, locations=locations, matches=matches)
 
-=======
-        except (ValueError, TypeError):
-            flash("Invalid category or location selection.", "danger")
-            return render_template('item.html', categories=categories, locations=locations, form=form, matches=matches)
-
-        date_found = request.form.get('date_found')
->>>>>>> d320566b2868d1a457ffbca956a76ec4ccd04999
         if date_found:
             try:
                 date_found = datetime.strptime(date_found, "%Y-%m-%d")
             except ValueError:
                 flash("Invalid date format. Please use YYYY-MM-DD.", "danger")
-<<<<<<< HEAD
                 return render_template('item.html', categories=categories, locations=locations, matches=matches)
         else:
             flash("Please provide a valid date.", "danger")
             return render_template('item.html', categories=categories, locations=locations, matches=matches)
-=======
-                return render_template('item.html', categories=categories, locations=locations, form=form, matches=matches)
-        else:
-            flash("Please provide a valid date.", "danger")
-            return render_template('item.html', categories=categories, locations=locations, form=form, matches=matches)
->>>>>>> d320566b2868d1a457ffbca956a76ec4ccd04999
 
         file = request.files.get('image')
         image_filename = None
@@ -976,29 +958,16 @@ def item():
         )
         db.session.add(found_item)
         db.session.commit()
-<<<<<<< HEAD
-
-=======
->>>>>>> d320566b2868d1a457ffbca956a76ec4ccd04999
         matches = find_matches()
 
         if matches:
             flash("Potential matches found! Claim the item below.", "info")
-<<<<<<< HEAD
             return render_template('claim_item.html', categories=categories, locations=locations, matches=matches)
         else:
             flash("Found item reported successfully!", "success")
             return redirect(url_for('dashboard'))
 
     return render_template('item.html', categories=categories, locations=locations, matches=matches)
-=======
-            return render_template('claim_item.html', categories=categories, locations=locations, form=form, matches=matches)
-        else:
-            flash("Lost item reported successfully!", "success")
-            return redirect(url_for('dashboard'))
-
-    return render_template('item.html', categories=categories, locations=locations, form=form, matches=matches)
->>>>>>> d320566b2868d1a457ffbca956a76ec4ccd04999
 
 @app.route('/claim_item/<int:item_id>/<string:item_type>', methods=['GET', 'POST'])
 @login_required

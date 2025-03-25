@@ -566,14 +566,14 @@
             <h2>DUT Lost And Found Portal</h2>
         </div>
         <div class="user-info">
-            Hello, {{ current_user.username }}
+            Hello
         </div>
         <ul class="sidebar-nav">
             <li class="has-submenu">
                 <a href="#" onclick="toggleSubmenu(this)"><i class="fas fa-list"></i> <span>Items</span> <i class="fas fa-chevron-right arrow"></i></a>
                 <div class="submenu">
-                    <a href="{{url_for('lost_items')}}"><i class="fas fa-search"></i> <span>Lost Items</span></a>
-                    <a href="{{url_for('found_items')}}"><i class="fas fa-box-open"></i> <span>Found Items</span></a>
+                    <a href="{{url_for('lost_item')}}"><i class="fas fa-search"></i> <span>Lost Items</span></a>
+                    <a href="{{url_for('found_item')}}"><i class="fas fa-box-open"></i> <span>Found Items</span></a>
                     <a href="{{url_for('matched_items')}}"><i class="fas fa-link"></i> <span>Matched Items</span></a>
                 </div>
             </li>
