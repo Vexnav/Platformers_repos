@@ -115,6 +115,10 @@
                     <th>Item Name</th>
                     <th>Description</th>
                     <th>Date Lost</th> 
+<<<<<<< HEAD
+=======
+                    <th>Actions</th>
+>>>>>>> d320566b2868d1a457ffbca956a76ec4ccd04999
                 </tr>
             </thead>
             <tbody>
@@ -128,6 +132,16 @@
                     <td>{{ item.item_name }}</td>
                     <td>{{ item.description }}</td>
                     <td>{{ item.date_lost.strftime('%Y-%m-%d') }}</td>
+<<<<<<< HEAD
+=======
+                    <td>
+                        <form action="{{ url_for('claim_item', item_id=item.id, item_type='lost') }}" method="POST">
+                            <button type="submit" class="btn btn-success btn-sm">
+                                <i class="fas fa-check"></i> Claim
+                            </button>
+                        </form>
+                    </td>
+>>>>>>> d320566b2868d1a457ffbca956a76ec4ccd04999
                 </tr>
                 {% endfor %}
             </tbody>

@@ -140,6 +140,7 @@ def terms_and_conditions():
 def register():
     form = RegistrationForm()
     if form.validate_on_submit():
+<<<<<<< HEAD
         existing_user = User.query.filter(or_(User.email == form.email.data, User.username == form.username.data)).first()
         
         if existing_user:
@@ -158,10 +159,25 @@ def register():
 
         send_email_confirmation(new_user)
 
+=======
+        hashed_password = generate_password_hash(form.password.data)
+        new_user = User(
+            username=form.username.data,
+            email=form.email.data,
+            password=hashed_password,
+            is_confirmed=False
+        )
+        db.session.add(new_user)
+        db.session.commit()
+
+        send_email_confirmation(new_user)
+
+>>>>>>> d320566b2868d1a457ffbca956a76ec4ccd04999
         flash('Registration successful! Please confirm your email before logging in.', 'info')
         return redirect(url_for('login'))
 
     return render_template('register.html', form=form)
+<<<<<<< HEAD
 
 def send_email_confirmation(user):
     token = serializer.dumps(user.email, salt='email-confirm-salt')
@@ -454,7 +470,155 @@ def dashboard():
 @login_required
 def index():
     query = ''
+=======
 
+def send_email_confirmation(user):
+    token = serializer.dumps(user.email, salt='email-confirm-salt')
+    confirm_url = url_for('confirm_email', token=token, _external=True)
+
+    msg = Message(
+        subject='Welcome to DUT Lost & Found Portal',
+        recipients=[user.email],
+        sender=app.config['MAIL_DEFAULT_SENDER']
+    )
+    msg.body = f"""
+    Hello {user.username},
+
+    Welcome to the DUT LOST AND FOUND PORTAL!
+    Please confirm your email by clicking the link below:
+    {confirm_url}
+
+    Warm regards,
+    The DUT Lost & Found Portal Team
+    """
+    try:
+        mail.send(msg)
+    except Exception as e:
+        flash(f'Failed to send confirmation email: {e}', 'danger')
+
+@app.route('/confirm_email/<token>')
+def confirm_email(token):
+    try:
+        email = serializer.loads(token, salt='email-confirm-salt', max_age=3600) 
+        user = User.query.filter_by(email=email).first()
+
+        if user.is_confirmed:
+            flash('Your email is already confirmed.', 'info')
+            return redirect(url_for('login'))
+
+        user.is_confirmed = True
+        db.session.commit()
+        flash('Your email has been confirmed successfully. You can now log in!', 'success')
+        return redirect(url_for('login'))
+
+    except Exception as e:
+        flash('The confirmation link is invalid or has expired.', 'danger')
+        return redirect(url_for('register'))
+
+@app.route('/reset_password', methods=['GET', 'POST'])
+def reset_password():
+    form = ResetPasswordRequestForm()
+    if form.validate_on_submit():
+        email = form.email.data
+        user = User.query.filter_by(email=email).first()
+        if not user:
+            flash('No account found with that email.', 'danger')
+            return redirect(url_for('reset_password'))
+
+        verification_code = random.randint(100000, 999999)
+        user.reset_code = verification_code 
+        db.session.commit() 
+
+        msg = Message(
+            'Password Reset Verification Code',
+            recipients=[user.email],
+            sender=app.config['MAIL_DEFAULT_SENDER']
+        )
+        msg.body = f"""Hi {user.username},
+
+        You have requested a password reset. Your verification code is:
+
+        {verification_code}
+
+        If you did not request this, please ignore this email.
+
+        Best regards,
+        DUT LOST & FOUND PORTAL
+        """
+        mail.send(msg)
+        flash('A verification code has been sent to your email. Enter it below to continue.', 'info')
+
+        return redirect(url_for('verify_code', email=email))
+
+    return render_template('reset_password.html', form=form)
+
+@app.route('/verify_code/<email>', methods=['GET', 'POST'])
+def verify_code(email):
+    user = User.query.filter_by(email=email).first()
+    if not user:
+        flash('Invalid email address.', 'danger')
+        return redirect(url_for('reset_password'))
+
+    form = VerifyCodeForm()
+    if form.validate_on_submit():
+        entered_code = form.code.data
+        if str(user.reset_code) == str(entered_code):  
+            flash('Verification successful! Please reset your password.', 'success')
+            return redirect(url_for('reset_password_form', email=email))  
+        else:
+            flash('Incorrect verification code. Please try again.', 'danger')
+
+    return render_template('verify_code.html', form=form)
+
+@app.route('/reset_password_form/<email>', methods=['GET', 'POST'])
+def reset_password_form(email):
+    user = User.query.filter_by(email=email).first()
+    if not user:
+        flash('Invalid email address.', 'danger')
+        return redirect(url_for('reset_password'))
+
+    form = ResetPasswordForm()  
+    if form.validate_on_submit():
+        new_password = form.password.data
+        confirm_password = form.confirm_password.data
+
+        if new_password != confirm_password:
+            flash('Passwords do not match. Please try again.', 'danger')
+            return redirect(url_for('reset_password_form', email=email))
+
+        user.password = generate_password_hash(new_password) 
+        user.reset_code = None  
+        db.session.commit() 
+
+        flash('Your password has been updated successfully!', 'success')
+        return redirect(url_for('login')) 
+
+    return render_template('reset_password_form.html', form=form)
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        username = request.form.get('username')
+        password = request.form.get('password')
+        user = User.query.filter_by(username=username).first()
+        admin = Admin.query.filter_by(username=username).first()
+        if user and check_password_hash(user.password, password):
+            login_user(user)
+            flash('User login successful!', category='success')
+            return redirect(url_for('dashboard'))  
+        elif admin and admin.check_password(password):
+            login_user(admin)
+            flash('Admin login successful!', category='success')
+            return redirect(url_for('admin_dashboard'))  
+        else:
+            flash('Invalid credentials. Please try again.', category='error')
+
+    return render_template('login.html')  
+>>>>>>> d320566b2868d1a457ffbca956a76ec4ccd04999
+
+@app.route('/admin_dashboard', methods=['GET', 'POST'])
+@login_required
+def admin_dashboard():
     if request.method == 'POST':
         query = request.form.get('query', '').strip()
         return redirect(url_for('index', query=query))
@@ -475,6 +639,151 @@ def index():
 
     reviews = Review.query.all()
 
+<<<<<<< HEAD
+=======
+    stats = {
+        'lost_count': LostItem.query.count(),
+        'found_count': FoundItem.query.count(),
+        'matched_count': MatchedItem.query.count()
+    }
+
+    lost_items = LostItem.query.order_by(LostItem.date_lost.desc()).limit(5).all()
+    found_items = FoundItem.query.order_by(FoundItem.date_found.desc()).limit(5).all()
+
+    current_month = datetime.now().month
+    current_year = datetime.now().year
+
+    lost_items_last_month = []
+    for i in range(12):
+        month = (current_month - i) % 12
+        year = current_year if current_month - i > 0 else current_year - 1
+        result = db.session.query(db.func.count(LostItem.id)).filter(
+            db.extract('month', LostItem.date_lost) == month,
+            db.extract('year', LostItem.date_lost) == year
+        ).scalar()
+        lost_items_last_month.append({'month': f"{year}-{month:02d}", 'count': result or 0})
+
+    found_items_last_month = []
+    for i in range(12):
+        month = (current_month - i) % 12
+        year = current_year if current_month - i > 0 else current_year - 1
+        result = db.session.query(db.func.count(FoundItem.id)).filter(
+            db.extract('month', FoundItem.date_found) == month,
+            db.extract('year', FoundItem.date_found) == year
+        ).scalar()
+        found_items_last_month.append({'month': f"{year}-{month:02d}", 'count': result or 0})
+
+    lost_items_data = {
+        'labels': [item['month'] for item in lost_items_last_month],
+        'data': [item['count'] for item in lost_items_last_month]
+    }
+    found_items_data = {
+        'labels': [item['month'] for item in found_items_last_month],
+        'data': [item['count'] for item in found_items_last_month]
+    }
+
+    return render_template(
+        'admin_dashboard.html',
+        stats=stats,
+        lost_items=lost_items,
+        found_items=found_items,
+        lost_items_data=lost_items_data,
+        found_items_data=found_items_data
+    )
+
+@app.route('/Manage_categories', methods=['GET', 'POST'])
+@login_required
+def manage_categories():
+    if request.method == 'POST':
+        category_name = request.form['name']
+        new_category = Category(name=category_name)
+        try:
+            db.session.add(new_category)
+            db.session.commit()
+            flash('Category added successfully!', 'success')
+        except Exception as e:
+            flash(f'Error adding category: {e}', 'danger')
+    categories = Category.query.all()
+    return render_template('manage_categories.html', categories=categories)
+
+@app.route('/admin/categories/delete/<int:id>')
+@login_required
+def delete_category(id):
+    category = Category.query.get_or_404(id)
+    try:
+        db.session.delete(category)
+        db.session.commit()
+        flash('Category deleted successfully!', 'success')
+    except Exception as e:
+        flash(f'Error deleting category: {e}', 'danger')
+    return redirect(url_for('manage_categories'))
+
+@app.route('/manage_locations', methods=['GET', 'POST'])
+@login_required
+def manage_locations():
+    if request.method == 'POST':
+        location_name = request.form['name']
+        new_location = Location(name=location_name)
+        try:
+            db.session.add(new_location)
+            db.session.commit()
+            flash('Location added successfully!', 'success')
+        except Exception as e:
+            flash(f'Error adding location: {e}', 'danger')
+    locations = Location.query.all()
+    return render_template('manage_locations.html', locations=locations)
+
+@app.route('/admin/locations/delete/<int:id>')
+@login_required
+def delete_location(id):
+    location = Location.query.get_or_404(id)
+    try:
+        db.session.delete(location)
+        db.session.commit()
+        flash('Location deleted successfully!', 'success')
+    except Exception as e:
+        flash(f'Error deleting location: {e}', 'danger')
+    return redirect(url_for('manage_locations'))
+
+@app.route('/recent_items')
+@login_required
+def recent_items():
+    recent_lost = LostItem.query.order_by(LostItem.date_lost.desc()).limit(5).all()
+    recent_found = FoundItem.query.order_by(FoundItem.date_found.desc()).limit(5).all()
+    return render_template('recent_items.html', recent_lost=recent_lost, recent_found=recent_found)
+
+@app.route('/dashboard')
+@login_required
+def dashboard():
+    users = User.query.all()
+    lost_items_count = LostItem.query.count()
+    found_items_count = FoundItem.query.count()
+    matched_items_count = MatchedItem.query.count()
+
+    return render_template('dashboard.html', users=users, lost_items_count=lost_items_count, found_items_count=found_items_count, matched_items_count=matched_items_count)
+
+@app.route('/index', methods=['GET', 'POST'])
+@login_required
+def index():
+    query = ''
+    if request.method == 'POST':
+        query = request.form.get('query')
+        return redirect(url_for('index', query=query))
+
+    query = request.args.get('query', '')
+
+    lost_items = LostItem.query.filter(
+        (LostItem.item_name.ilike(f"%{query}%")) | 
+        (LostItem.description.ilike(f"%{query}%"))
+    ).all()
+
+    found_items = FoundItem.query.filter(
+        (FoundItem.item_name.ilike(f"%{query}%")) | 
+        (FoundItem.description.ilike(f"%{query}%"))
+    ).all()
+    reviews = Review.query.all()
+
+>>>>>>> d320566b2868d1a457ffbca956a76ec4ccd04999
     return render_template('index.html', lost_items=lost_items, found_items=found_items, reviews=reviews)
 
 @app.route('/search_results', methods=['GET'])
@@ -539,8 +848,12 @@ def report_lost():
     categories = Category.query.all()
     locations = Location.query.all()
     form = ReportLostItemForm()
+<<<<<<< HEAD
     matches = []
 
+=======
+    matches = [] 
+>>>>>>> d320566b2868d1a457ffbca956a76ec4ccd04999
     if request.method == 'POST':
         item_name = request.form.get('item_name')
         category_id = request.form.get('category_id')
@@ -596,6 +909,10 @@ def report_lost():
 def item():
     categories = Category.query.all()
     locations = Location.query.all()
+<<<<<<< HEAD
+=======
+    form = ReportFoundItemForm()
+>>>>>>> d320566b2868d1a457ffbca956a76ec4ccd04999
     matches = []
 
     if request.method == 'POST':
@@ -603,24 +920,42 @@ def item():
         category_id = request.form.get('category_id')
         location_id = request.form.get('location_id')
         description = request.form.get('description')
+<<<<<<< HEAD
         date_found = request.form.get('date_found')
+=======
+>>>>>>> d320566b2868d1a457ffbca956a76ec4ccd04999
 
         try:
             category_id = int(category_id)
             location_id = int(location_id)
+<<<<<<< HEAD
         except ValueError:
             flash("Invalid category or location selection.", "danger")
             return render_template('item.html', categories=categories, locations=locations, matches=matches)
 
+=======
+        except (ValueError, TypeError):
+            flash("Invalid category or location selection.", "danger")
+            return render_template('item.html', categories=categories, locations=locations, form=form, matches=matches)
+
+        date_found = request.form.get('date_found')
+>>>>>>> d320566b2868d1a457ffbca956a76ec4ccd04999
         if date_found:
             try:
                 date_found = datetime.strptime(date_found, "%Y-%m-%d")
             except ValueError:
                 flash("Invalid date format. Please use YYYY-MM-DD.", "danger")
+<<<<<<< HEAD
                 return render_template('item.html', categories=categories, locations=locations, matches=matches)
         else:
             flash("Please provide a valid date.", "danger")
             return render_template('item.html', categories=categories, locations=locations, matches=matches)
+=======
+                return render_template('item.html', categories=categories, locations=locations, form=form, matches=matches)
+        else:
+            flash("Please provide a valid date.", "danger")
+            return render_template('item.html', categories=categories, locations=locations, form=form, matches=matches)
+>>>>>>> d320566b2868d1a457ffbca956a76ec4ccd04999
 
         file = request.files.get('image')
         image_filename = None
@@ -641,17 +976,29 @@ def item():
         )
         db.session.add(found_item)
         db.session.commit()
+<<<<<<< HEAD
 
+=======
+>>>>>>> d320566b2868d1a457ffbca956a76ec4ccd04999
         matches = find_matches()
 
         if matches:
             flash("Potential matches found! Claim the item below.", "info")
+<<<<<<< HEAD
             return render_template('claim_item.html', categories=categories, locations=locations, matches=matches)
         else:
             flash("Found item reported successfully!", "success")
             return redirect(url_for('dashboard'))
 
     return render_template('item.html', categories=categories, locations=locations, matches=matches)
+=======
+            return render_template('claim_item.html', categories=categories, locations=locations, form=form, matches=matches)
+        else:
+            flash("Lost item reported successfully!", "success")
+            return redirect(url_for('dashboard'))
+
+    return render_template('item.html', categories=categories, locations=locations, form=form, matches=matches)
+>>>>>>> d320566b2868d1a457ffbca956a76ec4ccd04999
 
 @app.route('/claim_item/<int:item_id>/<string:item_type>', methods=['GET', 'POST'])
 @login_required
@@ -995,6 +1342,12 @@ def admin_reviews():
 @app.route('/admin/review/delete/<int:review_id>', methods=['POST'])
 @login_required
 def delete_review(review_id):
+<<<<<<< HEAD
+=======
+    if not current_user.is_admin:
+        flash("Unauthorized action!", "danger")
+        return redirect(url_for('admin_reviews'))
+>>>>>>> d320566b2868d1a457ffbca956a76ec4ccd04999
 
     review = Review.query.get_or_404(review_id)
     db.session.delete(review)

@@ -35,6 +35,7 @@
         <input type="text" name="query" class="form-control me-2" placeholder="Search for items..." value="{{ request.args.get('query', '') }}">
         <button type="submit" class="btn btn-primary">Search</button>
     </form>
+<<<<<<< HEAD
 
     <div class="row">
         <div class="col-md-6">
@@ -67,6 +68,58 @@
             {% endif %}
         </div>
     </div>
+=======
+    <div class="container mt-4">
+      <h1>Search Results for "{{ query }}"</h1>
+      
+      {% if lost_items|length == 0 and found_items|length == 0 %}
+      <div class="alert alert-warning text-center">
+          No items found matching "{{ query }}".
+      </div>
+      {% endif %}
+      
+      {% if lost_items|length > 0 %}
+      <div class="row">
+        {% for item in lost_items %}
+        <div class="col-md-4 mb-4">
+          <div class="card">
+            {% if item.image %}
+            <img src="{{ url_for('static', filename='images/' + item.image) }}" class="card-img-top img-thumbnail" alt="{{ item.item_name }}">
+            {% endif %}
+            <div class="card-body">
+              <h5 class="card-title">{{ item.item_name }}</h5>
+              <p class="card-text">
+                <small class="text-muted">Lost on: {{ item.date_lost }}, Location: {{ item.location_id }}</small>
+              </p>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+      {% endif %}
+      
+      {% if found_items|length > 0 %}
+      <div class="row">
+        {% for item in found_items %}
+        <div class="col-md-4 mb-4">
+          <div class="card">
+            {% if item.image %}
+            <img src="{{ url_for('static', filename='images/' + item.image) }}" class="card-img-top img-thumbnail" alt="{{ item.item_name }}">
+            {% endif %}
+            <div class="card-body">
+              <h5 class="card-title">{{ item.item_name }}</h5>
+              <p class="card-text">
+                <small class="text-muted">Found on: {{ item.date_found }}, Location: {{ item.location_id }}</small>
+              </p>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+      {% endif %}
+    </div>
+  </div>
+>>>>>>> d320566b2868d1a457ffbca956a76ec4ccd04999
 
   <footer class="bg-light text-dark py-4 mt-auto">
     <div class="text-center">

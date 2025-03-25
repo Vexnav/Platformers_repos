@@ -42,7 +42,11 @@
   <div class="container">
     <div class="register-container mt-4">
       <h2 class="mb-3">Lost Item Details</h2>
+<<<<<<< HEAD
       <form method="POST" action="{{url_for('report_lost')}}" enctype="multipart/form-data">
+=======
+      <form method="POST" action="/report_lost" enctype="multipart/form-data">
+>>>>>>> d320566b2868d1a457ffbca956a76ec4ccd04999
         <div class="mb-3">
           <label for="item_name" class="form-label">Item Name</label>
           <input type="text" name="item_name" id="item_name" class="form-control" placeholder="Enter item name" required>
@@ -57,16 +61,28 @@
           <label for="category_id" class="form-label">Category</label>
           <select name="category_id" id="category_id" class="form-select" required onchange="checkOtherOption(this, 'categoryModal')">
               {% for category in categories %}
+<<<<<<< HEAD
               <option value="{{ category.id }}">{{ category.name }}</option>
               {% endfor %}
           </select>
         </div>
       
+=======
+              <option value="{{ category.name }}">{{ category.name }}</option>
+              {% endfor %}
+          </select>
+        </div>
+    
+>>>>>>> d320566b2868d1a457ffbca956a76ec4ccd04999
         <div class="mb-3">
           <label for="location_id" class="form-label">Item Last Seen Location</label>
           <select name="location_id" id="location_id" class="form-select" required onchange="checkOtherOption(this, 'locationModal')">
               {% for location in locations %}
+<<<<<<< HEAD
               <option value="{{ location.id}}">{{ location.name }}</option>
+=======
+              <option value="{{ location.name}}">{{ location.name }}</option>
+>>>>>>> d320566b2868d1a457ffbca956a76ec4ccd04999
               {% endfor %}
           </select>
         </div>
@@ -160,6 +176,7 @@
         }
     }
   </script>
+<<<<<<< HEAD
   <script>
     document.addEventListener("DOMContentLoaded", function () {
       let today = new Date().toISOString().split("T")[0];
@@ -167,5 +184,7 @@
     });
   </script>
   
+=======
+>>>>>>> d320566b2868d1a457ffbca956a76ec4ccd04999
 </body>
 </html>

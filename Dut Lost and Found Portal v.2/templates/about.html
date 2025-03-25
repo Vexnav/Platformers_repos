@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DUT Lost & Found Portal-About Us</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+  <link href="/static/styles.css" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+          <a class="navbar-brand" href="/">DUT Lost Item Portal</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+              <li class="nav-item">
+                <a class="nav-link" href="{{url_for('index')}}">
+                  <i class="fas fa-search"></i> Browse Items
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{{url_for('login')}}">
+                  <i class="fas fa-sign-in-alt"></i> Sign In
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+    </nav>
+    <div class="container mt-5">
+      <h4 class="text-center">About Us</h4>
+      <p>
+          The Durban University of Technology (DUT) Lost and Found Portal is a cutting-edge platform designed to reunite lost belongings with their rightful owners. Whether you're a student, staff member, or visitor, our portal serves as a reliable resource for recovering lost items in a timely and efficient manner.
+      </p>
+      <h4 class="text-center">Why Choose the DUT Lost and Found Portal?</h4>
+      <p>
+          Losing personal belongings can be stressful, but the DUT Lost and Found Portal eliminates the hassle of finding lost items. By offering a centralized, technology-driven solution, we ensure that misplaced items are easy to report and claim.
+      </p>
+      <ul>
+          <li><strong>User-Friendly Interface:</strong> Our platform is simple to use, even for first-time users.</li>
+          <li><strong>Fast Reporting:</strong> Quickly list an item you've found or report an item you've lost.</li>
+          <li><strong>Real-Time Matching:</strong> Advanced algorithms match lost and found items based on detailed descriptions and location data.</li>
+          <li><strong>Secure Portal:</strong> All your information is handled with care and security.</li>
+      </ul>
+      <h2>How It Works</h2>
+      <ol>
+          <li><strong>Report:</strong> List an item you’ve lost or found by entering detailed information.</li>
+          <li><strong>Match:</strong> The system automatically finds possible matches based on the provided details.</li>
+          <li><strong>Connect:</strong> Contact the person who found your item (or the rightful owner) to arrange for its return.</li>
+      </ol>
+      <h2>Contact Us</h2>
+      <p>
+          If you have any questions or need assistance, please contact our Lost and Found Help Desk located on campus or email us at <a href="mailto:lostandfound@dut.ac.za">lostandfound@dut.ac.za</a>.
+      </p>
+  </div>
+  
+   <footer class="bg-light text-dark py-4 mt-auto">
+       <div class="text-center">
+            <p>© 2025 DUT Lost and Found Portal. All rights reserved.</p>
+            <a href="{{url_for('privacy_policy')}}" class="text-primary me-3">
+              <i class="fas fa-user-shield"></i> Privacy Policy
+            </a>
+            <a href="{{url_for('terms_and_conditions')}}" class="text-primary">
+              <i class="fas fa-file-contract"></i> Terms of Service
+            </a>
+      </div>
+    </footer>
+</body>
+</html>
